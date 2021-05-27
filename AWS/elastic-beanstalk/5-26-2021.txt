@@ -1,0 +1,10 @@
+Setup):
+    1: create an environment
+        -provide application name
+        *This brings up the
+            Auto-scaling group
+            ec2 instance
+            ELB
+            Security group
+            IAM profiles for EB
+            

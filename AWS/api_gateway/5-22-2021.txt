@@ -1,0 +1,2 @@
+$input.path("")
+    -how to obtain value from the post body

@@ -1,0 +1,5 @@
+async keyword is used for creating asynchronous tasks, prefered over Promises 
+
+DOM (Document object model):
+    - data representation of the object contained within the webpage
+    - represented as nodes and objects that can be manipuled

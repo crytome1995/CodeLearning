@@ -1,0 +1,2 @@
+JQ uses # for searching for id
+JQ uses . for searching for classes
