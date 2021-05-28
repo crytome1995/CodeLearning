@@ -1,0 +1,6 @@
+Setting up a virtual environment: This allows for seperate package installastions for
+different projects
+1) python3 -m venv env creates the virtual enviornemt
+2) Active virtual environment
+    MAC: source env/bin/activate
+    WINDOWS: .\env\scripts\activate

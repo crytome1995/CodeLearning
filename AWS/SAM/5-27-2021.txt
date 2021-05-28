@@ -1,0 +1,2 @@
+AWS Serverless application model (SAM) comes pre-built with code-deploy
+    - used to deploy lambda functions

@@ -1,0 +1,5 @@
+Can specify the location of the lambda function in S3
+
+When executing a lambda function the handler settings needs to be providded
+    The handler is in the format name_of_python_file.name_of_python_function
+    *Located in runtime settings 
