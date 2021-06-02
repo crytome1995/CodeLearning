@@ -1,0 +1,1 @@
+CloudTrail events are region specific

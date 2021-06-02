@@ -1,4 +1,10 @@
 Get the budget scheduler labmda function boiler plate setup [x]
-Have a SAM for lambda []
+Have a deployment workflow for lambda [x]
 simple code deploy of lambda boiler plate that says hello world [x]
-invoke simple lambda function from api gateway []
+MOVE TO NEXT WEEK: invoke simple lambda function from api gateway []
+
+
+
+SIDE GOALS:
+Setup a github action on dev push run unit tests [x]
+Setup a github workflow to run integration tests on PR to branch main [x]

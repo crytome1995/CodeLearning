@@ -1,0 +1,2 @@
+use: git rm --cached <file> if a file/folder has been added to .gitignore and it not
+    being tracked properly

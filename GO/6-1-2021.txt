@@ -1,0 +1,7 @@
+go modules allow for getting rid of the GOPATH dependency, allow for installing multiple
+versions of a dependency and allows for listing all dependencies in a file go.modules
+
+MODULE REQUIREMENTS:
+1) a go module must be a VCS repo
+2) a go module should contain one or more packages
+3) a go module should contain one or more .go files
