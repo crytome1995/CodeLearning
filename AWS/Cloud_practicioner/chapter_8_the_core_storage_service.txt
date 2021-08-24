@@ -1,0 +1,171 @@
+THE CORE STORAGE SERVICE
+
+Simple Storage Service(S3):
+    S3 can store infinite amount of data and any amount of data. This data can be encrypted  and can 
+    also have its access controlled. Numerous services use s3 to store log information.
+
+    Objects and Buckets:
+        S3 stores files as objects and each objects must have a unique key and can not be larger than 5TB in size
+        ** object names can be 1024Bytes and alpha numeric followed by some special characters
+        Objects are stored in buckets and a bucket is assigned to a region with a globally unique name
+        ** Objects can be replicated across regions
+        Charging:
+            AWS charges based on storage, storage class, and retrival
+            AWS gives 1GB download per month for free and charges .09$ per GB after
+
+    S3 Storage classes:
+        how to control the accessability and protection of data.
+        A key concept for s3 is durability and availability:
+            Typically s3 holds a 99.9999999% durability except for the reduced redundancy storage tier which is 99.99%
+            The various storage classes then are mostly differed by the availability they provide
+        Frequently Accessed Objects:
+            Following storage classes provide high availablitly:
+                1) Standard:
+                    the default storage class with the highest level of durability and availability
+                    ** objects are always replicated across atleast 3 AZ's
+                2) Reduced Redundancy:
+                    NOT RECOMMENED, provided for a high availability but a severe reduction in durability at 4 9's
+        Infrequently Accessed Objects:
+            Following sotrage classes provide reduced availability:
+                1) Standard_IA: 
+                    objects stored in multiple AZ's but with 4 9's of availability
+                2) Onezone_IA:
+                    Objects stored with this class are not replicated and stored withing a single 
+                    availability zone with the lowest availability: 99.5% use only for objects that can be 
+                    recreated elsewhere
+                3) Glacier:
+                    used to deep archiaval of objects. Retrievel is done through a request and can take from
+                    1 minute to 12 hours.
+        Storage class for frequently and infrequently accessed:
+            Used for when both situations need to be accounted for:
+                1) Intelligent Tiering:
+                    objects not accessed for 30 days are moved to the infrequent access tier
+                    ** there is a charge for monitoring and automation 
+                    ** objects smaller than 128KB are always charged at the frequent access tier
+    Access Permissions:
+        by default objects are only accessible by the account who created them. To controll permissions AWS S3 uses:
+            - bucket policies, user policies, bucket ACL
+        1) Bucket policies:
+            resource based policy applied at the object level.
+            ** can be used to control the object a principal can retrieve/delete/write
+            ** can grant anonymous read access to allow objects to be public from the internet
+        2) User Policies:
+            apply IAM policies to IAM users to control access to buckets/objects
+            ** Can not be used to grant public annonymous access
+        3) Bucket ACL:
+            Deprecated form of control that can allow other accounts and annonymous access
+        ** these permissions are not mutually exclusive
+    Encryption:
+        S3 does not encrypt objects by default, to facilitate this S3 provides two options for encryption at rest:
+            1) Server-side encryption:
+                s3 encrypts the objects using its own managed key and when requested decrypts it for viewing
+            2) Client-side encryption:
+                encryption is completely handled by the client. 
+                ** if the private key is lost the data is as well
+    Versioning:
+        To prevent from accidentally losing valuable information due to overriding versioning can be enabled on a bucket.
+        When a object is put that already exists, the version is incremented and replaced with the overwrite, but the previous version still persists
+        ** Objects that are deleted are not physically deleted just marked with a delete marker
+        ** Object versions can be deleted through the use of a object lifecycle policy
+    Object Lifecycle Configurations:
+        How to transition or delete objects based after time
+        Object lifecycles are applied to buckets and contain one or two actions:
+            1) Transition Actions:
+                move objects to a different storage class when a determined age has been met
+            2) Expiration Actions:
+                Delete objects after a certain age, can eb applied to object versions as well
+
+S3 Glacier:
+    used for long term archival of storage
+    Archives and Vaults:
+        archives which can be from 1 byte to 40TB are containers for what is stored inside a vault
+        ** it is common to zip files together and create an archive from this zip
+        Vaults can be created from the console and must be unique within a region but not globally
+        ** uplodaing data to a vault can not be done through the AWS Console
+    Retirveal Options:
+        Retriveal of objects in from an archive in a vault is not immediate and requires submiting a request
+        The data is available for download after the request is completed
+        Speed of the request depends on the retrival option used:
+            1) Expedited:
+                Can retrive and archive withing 1-5 minutes, but may take longer if archive is larger than 250MB
+                ** can reserve capacity to make sure retrivel is kept up in a timely fasion
+                ** .03 per GB
+            2) Standard:
+                a retrival can complete within 3-5 hours
+                ** .01 per GB
+            3) Bulk:
+                cheapest and slowest completing between 5-12 hours
+                ** .0025 per GB 
+
+AWS Storage Gateway:
+    Use for transfering data betweem the cloud  and on-premise servers through a VM that is installed on-premise
+    There are three virtual machine types for different use cases:
+        1) File Gateways:
+            Using Network File System and Server Message Block protocols, the file gateway allows the storage of data on s3
+            Data is cached locally on the file gateway to allow for low-latency retrival
+            ** acts as a file server
+        2) Volume Gateway:
+            s3 backed storage volumes using the small computer system interface protocl
+            Stored volumes:
+                data is stored locally while also being stored to an ebs volume snapshot
+                ** good option for data access that can't be interrupted
+                ** volume can be from 1GB - 16 TB
+            Cached Volume:
+                only a subset of the data is kept on locally
+                ** volume can be from 1GB- 32 TB
+                ** good option for when not alot of storage is available
+            ** Both configurations allow for EBS snapshot configurations to be attached to an ec2 instance or restored to a gateway volume
+        3) Tape gateways:
+            used for long archival or data via tapes backed by s3
+            ** tape gateway keeps data in cache untill data has completely uploaded 
+            ** for long term storage VTL can be moved to a virtual tape shelf backed by glacier
+AWS Snowball:
+    Used for large transfers of files:
+        Moving on-premise data to s3, transfering data to and from s3, transfering data to customers or partners
+        AWS will send a snowball device, the data is loaded onto the snowball device and then shipped back to AWS which is then 
+        imported into S3 at no charge for transferal
+    Hardware:
+        Largest snowball can hold 80TB of data at 250$, the smallest stores up to 42TB
+        Supports network speeds of 10 Gbps
+        ** can hold onto snowball for 10 days after incuring additional charges, and a maximum of 90 days
+        ** can use snowball to export s3 data but are charged for output
+    Security:
+        Snowballs hold trusted platform modules(TPM) that can detect changes to the hardware
+        Snowballs enforce encryption on the data in transit through ssl and at rest
+        ** AWS erases all data from the snowball after each use following the national institutes for standards and technology NIST
+    Snowball edge:
+        faster version of snowball with some extra functionality such as:
+            - local storage to s3 functions
+            - compute power to run ec2 instances or lambda functions
+            - file server functionality
+        3 types of snowball edge:
+            1) storage optimized:
+                80tb sotrage
+                ** support 40 GBps 
+            2) Computew optimized:
+                ** supports 100 GBps storage
+                offers the most compute power: 52vCPU'S
+            3) Compute optimized with gpu
+
+        ** Can cluster snowball edge devices together 5-10
+Summary:
+    When it comes to storing files on s3 look no further than the HA super reliable s3 service. s3 is used to store files called objects in buckets that are unique globally across AWS.
+    S3 objects are unique in each bucket and can be versioned to handle when duplicate files are put in the same bucket. To control access to the bucket, bucket policies, user policies 
+    which are assigned by IAM, and bucket ACL can be used to control access in the account and annonymous access. It is important to decide the durability and reliability that data needs in each bucket;
+    for this AWS uses storage classes. The standard storage class is default and provides 9 9's of reliability and best availability. For infrequently accessed data use the standard_IA and onezone_IA, 
+    with onezone_IA data is not replicated so has the worst  availability at 99.5. 
+    Reduced_redundancy storage class is not recommended and has the worst durability and availability. 
+    Glacier can be used as a sotrage class for archiving of large amount of data. Objects can be as small as 5MB and as large as 5TB. Payment is done on sotrage and object retrieval.
+    Another storage class called inteligent tiering that can transition objects that have not been accessed in 30 days to be moved to the infrequetn access tier. 
+    When it comes to keeping objects in s3 safe you can enable server side encryption for all objects in a bucket
+    and s3 takes care of the key and encryption. A client can also use client side encryption at the risk of keeping the private key secure.
+     An object lifecycle policy can be configured to control the storage class an object gets moved to after
+    a period of time using a transition action or even control when a object or versioned object gets deleted using an expiration action.
+     AWS Storage gateway can be used to transfer files on premis to and from s3 using a on-premise hosted VM. A couple VM types such as
+    file gateways are used for transfering files to s3 buckets, volume gateways are used for creating s3 backed ebs snapshots, 
+    and tape gateways are used for large archival transfers to and from s3 using volume mount libraries.
+    Amazon glacier is a long term archival service that uses archives which are groups of file, and vaults that are made of archives. 
+    Insert of objects into a vault can only be done through the CLI. When retireving objects from 
+    glacier it is done through a retriveal request. Retrieval options can be of three types to speed up download. Expedited, standard and bulk with each having different SLA's and costs. AWS snowball is a 
+    service where AWS sends a device that can be used for the transferal of files to the device and then shipped to amazon for upload to s3. Snowball edge is the same as
+    snowball except it comes with compute power for running local ec2 instances or lambda functions on the box. Data encryption is strictly enforced on snowball.    

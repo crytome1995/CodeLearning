@@ -1,0 +1,8 @@
+constants are declared like so 
+ const (
+     Name = "ethan"
+ )
+
+ this constant can be accessed by all go files in the same PACKAGE
+
+ - When Unmarshalling to an object, make sure the field names of the struct are capital

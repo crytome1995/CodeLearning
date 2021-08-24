@@ -1,0 +1,11 @@
+There is a difference between lists and slices in golang
+    -lists are pre-sized arrays list [10]int
+    -lists are variable sized arrayys []int
+
+Golang * denotes a reference to a pointer & creates a pointer to a variable
+    1) create the variable
+    i := 10
+    2) create a point to i
+    p := &i
+    3) change the value of i through the pointer
+    *p = 12

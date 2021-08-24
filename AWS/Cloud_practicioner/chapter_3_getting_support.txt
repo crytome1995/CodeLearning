@@ -1,0 +1,55 @@
+GETTING SUPPORT ON AWS
+
+Support Plans: 
+    * Spending, based on the tier of plan, the account will be charged on a percentage of the usage given the amount spent falls within a range
+        - Support plans give support to an organization, email/chat...
+    Basic/Developer/Business/Enterprise are the level of support
+        ** Enterprise provides guidance on architecture design
+    1) Basic:
+        - access to public documentation
+        - can contact support at anytime
+        - limited access to Trusted Advisor
+    2) Developer:
+        - Provides contact to support for general advice on AWS services, but can not give specific help on stuff being used currently
+        ** should be used on non critical infrastructure
+    3) Business:
+        - Provides detailed answers to technical questions
+        - System down reports will receive a response within the hours
+    4) Enterprise:
+        - Receive a dedicated Technical account manager that assists with alot
+        - 24/7 access to senior engineers
+        - 15000 a month
+
+AWS Professional Services:
+    Allow for customers to get in contact with AWS and figure out how AWS can be beneficial
+
+Getting help:
+    AWS documentation
+    Knowledge Center:
+        Website holding Frequently asked questions
+    Security Resources:
+        Website holding topics on security best practicies on AWS
+    Discussion Forums:
+        Hold discussions about AWS
+    Trusted Advisor:
+        Provides alerts across 4 categories
+            1) Cost Optomization:
+                - alert when resources are running bot not really being used
+            2) Security:
+                - Identifies when security best practicies are not being followed
+            3) Performance:
+                - when settings may be prohibiting performance
+                    - Example: Using standard magnetic over SSD EBS type
+            4) Fault tolerance: 
+                - Identifies resources that are vulnerable to service disruption
+            5) Service Limits:
+                - Identifies resources approaching the service limit
+            
+            For business and enterprise support plans all alerts are available
+
+Summary:
+    When a user signs up an AWS account, they must pick a support plan to assign to the account. AWS provides 4 tpyes, basic, developer, business, and enterprise. Besides the basic plan, 
+    teams are charged based on a percentage of the total spending in the account. The enterprise support plan is given a dedicated technical account manager that assists with various 
+    things, and also 24/7 asistence with senior engineers. When it comes to learning about the AWS enterprise, there are numerous resources such as documentation, the AWS Knowledge center 
+    holding tons of FAQ, and also the AWS discussion forum. Finally, AWS provides the Trusted advisor service that displays current practices the account may or may not be following. Trusted advisor
+    alerts are broken down to: cost optomization, fault tolerance, security, service limits, and performance. Besides the basic and developer plans, all alerts are available.

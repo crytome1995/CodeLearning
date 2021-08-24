@@ -1,0 +1,5 @@
+Connect codebuild to vpc requires:
+    vpc ID
+    vpc subnet ids
+    vpc security groups
+    in order to interact with VPC

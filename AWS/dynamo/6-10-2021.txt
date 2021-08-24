@@ -1,0 +1,9 @@
+In order to submit a Query to Dynamo 2 things are required:
+    KeyConditionExpression
+    Equality expression matching the partition key
+
+When performing a Query can have the RCU returned by specifying ReturnConsumedCapacity:
+    NONE: nothing returned (default)
+    TOTAL: all RCU
+    INDEXES: across all indexes
+

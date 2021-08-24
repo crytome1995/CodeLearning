@@ -1,0 +1,3 @@
+apply a tain to a node
+
+kubectl taint node ip-10-0-3-97.ec2.internal cicd:NoSchedule

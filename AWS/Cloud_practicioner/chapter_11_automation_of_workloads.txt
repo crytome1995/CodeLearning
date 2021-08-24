@@ -1,0 +1,195 @@
+AUTOMATING YOUR AWS WORKLOADS
+
+Imperative vs Declarative automation:
+    Imperative:
+        writing scripts to perform tasks
+        ** step-by-step operations to carry out a task
+    Declarative:
+        writing code the defines the desired state and is used to carry out the operation 
+        ** cloudformation is a good example
+    
+Infrastructure as code:
+    code to define configuration and infrastructure
+
+CloudFormation:
+    AWS service to automatically crete and configure resources in the cloud
+
+    Templates:
+        definition of resources in JSON or Yaml notation
+        ** can be held in s3 for version control 
+        Templates can be different or the same per environment
+        Cloudformation makes sure each envrionments resources are different by assigning random ID's to each
+        ** Templates can take in parameters from user input, or provide default paramaters for the template
+
+    Stacks:
+        A collection of resources created from a template that are unique across an account
+        ** deletion of a stack delets all resources associated with it
+
+        Stack updates:
+            can modify resources in a template and have cloudformation do the update or use a change set
+            A change set represents the configuration changes desired from the modifications
+            ** Stack policy is JSON representation that states what may be modifed in a stack, sits seperatly from the template
+
+        Tracking stack changes:
+            events are tracked for each stack with an associated timestamp
+            ** Drift detection helps monitor deviations in the stacks resources such as when someone deletes the VPC not through a template change
+    
+CodeCommit:
+    AWS version control system that can integrate with a private github repo
+
+CodeBuild:
+    Managed service for packaging ready to deploy code
+    Build actions:
+        Perform any formatting and testing actions
+        Compile the binary/ build containers
+        Buile spec file defines the tasks of the build action
+        ** Build spec can be in codeCommit private github, bitbucket or an s3
+        ** Codebuilds can run simultaneously and output is put into s3 for other resources to consume
+    Build environments:
+        a build environment is an isolated compute instance for running the build tasks
+        3 compute types for build environmnet:
+            build.general1.small/medium/large
+
+CodeDeploy:
+    Service for automatically deploying applications to ec2 instances, lambda, or on-premise servers
+    ** Pulls files from s3, github or bitbucket for the application 
+    Specify deploy action in an application spec file
+    Deploying to ec2-instances or on-premise:
+        CodeDeploy agent:
+            must be installed to allow codedeploy to move files to the instance for Installation
+        Supports deploying to instances based on resource tags/auto-scaling group membership/or manually
+        ** deployment can be done one-at-a-time, all-at-once, or half-at-a-time
+    Upgrading deployments:
+        1) In place deployment:
+            deploys to all existing instances
+            ** each instance is stopped, code is installed, and then restarts the instance
+        2) Blue/Green:
+            deploys to new set of instances
+            ** can optionally have old instances decommisioned aftet verifying the deployment
+    Deploying to ECS:
+        instead of providing files, docker images are used for deployment resource
+        ** code deploy can shift traffic to new containers if behind an application load balancer
+    Deploying to lambda:
+        involves the creation of a new lambda version
+        ** codedeploy support traffic shifting for lambda by slowly shifting, or all at once
+
+CodePipeline:
+    CI/CD pipeline solution that uses stages to define the process of the source code deployment
+    ** possible scenario: build source from codecommit and push binary to s3 for codedeploy to pick up
+    A pipeline is made stages and each stage contains one or more actions:
+        1) Source
+        2) build
+        3) test
+        4) approval 
+        5) deploy
+        6) invoke
+        ** each action except the approval action is performed by a provider
+    Providers:
+        what performs the action
+        1) Source providers:
+            where the code comes from such as s3, codecommit, github or ecr
+        2) Build and test:
+            codebuild, jenkins... some form of CI tool
+        3) Deploy:
+            cloudformation:
+                deployment of templates
+            codeDeploy
+            ec2
+            s3: updates to a public website hosted in s3
+        4) Invoke:
+            calls lambda functions
+        5) Approval:
+            can add anywhere after the source stage
+
+EC2 Auto scaling:
+    ensures the demand of ec2 instances is met
+    Launch configurations and launch templates:
+        defines the configuration of the instance for launch such as AMI/Storage/ or custom user scripts via userData
+        ** launch templates can be used without auto-scaling but launch configurations can only be used with auto-scaling and cant be modified
+    Auto Scaling Groups:
+        instances that are scaled are organized into an auto scaling group and can have traffic distributed to them via an ALB
+    Desired Capacity:
+        how many instances should be up
+    Self-Healing:
+        will terminate instances if an ec2 or elb backed instance fails healthcheck
+        ** ec2 instances can have theri health checked by network connectivity or a running process is shown
+    Scaling Actions:
+        Define how to scale up or down:
+            1) dynamic scaling:
+                scales out or in based on a metric
+            2) scheduled scaling:
+                can predict the next scaling need based on historic data and create a scaling schedule
+                ** needs atleast one days worth of traffic
+            
+Configuration Managment:
+    ensure that configuration state of instances
+    Can be imperative or declarative with systems manager and or opswork
+
+    Systems Manager:
+        Imperative AWS service for instance configuration
+        Command Documents:
+            scripts that run on the instance either at a desired time or when an instance is brought up
+            ** requires an agent to be installed on the instance and can be in the cloud or on-premise
+        Configuration Compliance:
+            provides visibility of what instances are in or out of synch with the state of the configuration
+        Automation Documents:
+            operations defined to interact with the AWS services such as creating snapshots or creating cloudformation stacks
+        Distributor:
+            used for applying installable software to instances
+            ** software is zipped and placed into an s3 bucket
+
+Opswork:
+    Declarative service for defining configuration using chef and puppet
+    ** requires one puppet or chef managed server to interact with the instances
+    Puppet:
+        puppet modules
+    Chef:
+        recipes and cookbooks
+    Opswork Stacks:
+        configure a desired state of the environmnet without using chef or puppet server
+        Uses chef recipes for configuraation
+        ** each stack holds a layer that is a template for a set of instances
+        Layers:
+            Help define the high level configuration for ec2 instances such as security, autoscaling ...
+            A layer can provision ec2 instances or have ec2 instancs added to a stack or from on-premise
+            1) Service layers:
+                allow for extending a stack to other AWS service such as a RDS, ELB, or an ECS cluster
+
+Summary:
+    There are popular ways to configure infrestructure on AWS. Imperative is usually by scripts that define step by step and declarative uses templates to define
+    the state of the system while using some intelligent system to setup the state. Cloudformation declarative AWS service for defining infrastructue in templates
+    that will generate stacks holding the desired AWS resources. Templates can be received from s3 or a code repository, and support setting default values or taking user input.
+    Stacks represent what is crerated and can be updated through change sets created through cloudformation. Since resources in a stack can be deleted without the use
+    of cloudformation, drift detection helps tracking when the stack becomes out of sync with the desired state. Codecommit is AWS version control system. CodeBuild is the CI service
+    for a CICD pipeline. Codebuild can take source code from s3, bitbucket, github, or codebuild and perform build actions using dedicated environments running on ec2
+    instance and output the build to an s3 bucket. CodeDeploy is the CD of AWS services that takes binary from a repository or s3 bucket and can install the software on ec2 instances
+    labda, or on premis servers. To install software of ec2 and or on-premise a codedeploy agent is required to be installed on the server. Installations can be all-at-once,
+    one-at-a-time, or partial. Upgrading deployment groups can be done by in place which will deploy to all instances, or blue/green which rill roll out new instances before
+    terminating the old ones. Deployment to ECS is done through providing container and deployment to lambda is done through creating new versions of the lambda function. 
+    Codepipeline brings all of the services together for a full ci/cd pipeline through stages with each stage having atleast one action. The source action is required and can
+    point to s3 or a code repository. The other actions are: build/test/approve/invoke/deploy. EC2 Autoscaling supports launch configuration and launch templates
+    for bringing up instances that are pre-configured. EC2 autoscaling supports self-healing by bringing up or down ec2 instances if they are not meeting a metric or not passing
+    healthcheck. Healthchecks can be based on the state of the instance or the healthcheck attached to the elb. Systems manager is used for defining the desired configuration
+    of ec2 instances through an imperative approach. Opswork is a declarative service that uses chef, puppet and stacks to define the configuration of ec2 instances. 
+    Chef and puppet require a dedicated instance to configure instances.
+
+1) C
+2) b,d 
+3) A
+4) a, b
+5) a, C
+6) B
+7) D
+8) b, D
+9) c,D codebuild build environment always hs an OS and a docker container
+10) b,c,e 
+11) A a codepipeline must have a source and a deploy stage
+12) D
+13) a, D
+14) B
+15) B
+16) B
+17) D
+18) D
+19) b, D
+20) D an opswork layer contains atleast one ec2 instance

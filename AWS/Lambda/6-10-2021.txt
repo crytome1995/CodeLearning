@@ -1,0 +1,5 @@
+Can assign a dead letter queue to a function/async function to hold events that failed and did not
+return to sender
+
+Use aws X-Ray to debug the API call a lambda function makes in AWS, x-ray publishes 
+-Lambda will need permission to push data to X-ray

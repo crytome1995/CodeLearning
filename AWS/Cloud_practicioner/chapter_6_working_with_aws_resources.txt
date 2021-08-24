@@ -1,0 +1,188 @@
+WORKING WITH YOUR AWS RESOURCES
+
+The AWS Management Console:
+    How to interact with aws services and resources.
+    ** Some setting are only available in the AWS CLI
+
+    Accessing the AWS console:
+        Two ways to log into the console:
+            1) Root user
+            2) IAM user:
+                Provide accountId or alias, iam username and password
+            ** Session will remain active for 12 hours
+
+    Resource groups:
+        Group resources based on queries on resource tags applied to the resource. Can view and manage these resources in the console such as CF stacks
+            ** up to 50 tags per resource, and tags are case sensitive
+
+        Tag Editor:
+            Query regions for specific resources such as ec2, vpc, ebs volumes, and apply tags to the resources in bulk
+            
+            Tagging strategies:
+                four common tagging strategies: techincal, automation, security, and business
+                1) Technical:
+                    the technical properties of a resource such as Name: Webserver, or by the environmnet it is placed in
+                2) Automation:
+                    tags that signify some automation process to be done to the resources, such as a Date timestamp for WHEN
+                3) Business:
+                    Help identify resources that belong to groups for spending assesment, an example would be Owner tag key
+                4) Security:
+                    Apply tags to resources that can be used by IAM policies to restrict access based on the presence of a tag
+    
+    AWS Console Mobile Application:
+        provides limited access to some AWS resources on mobile phones
+        Requirements:
+            Android or Apple
+        ** Can login same way as the desktop console
+
+AWS CLI:
+    How to interact with AWS through Scripts
+    Requirements:
+        Access key id and secret key to authenticate to API
+
+    Installation:
+        ** comes pre-installed on amazon linux AMI's 
+        - python and pip
+    
+        AWS Configure:
+            command to provide acccess key, secret key, region, and default output format
+        
+        Example command:
+            aws iam list-access-keys: show the access keys on the account
+
+AWS SDK's:
+    SDK compatible languages: java, .net, node.js, php, python, go, ruby, javascript, c++
+
+    Mobile SDK:
+        programatic access on mobile devices
+        ** AWS Amplify:
+            open source framework to build mobile applications on AWS
+            ** Use to integrate mobile applications with AWS without using alot of code
+
+    IoT SDK:
+        Allow for IoT devices to interact with AWS services
+
+CloudWatch:
+    Service that allows the monitoring of aws resources in the form of logs, metrics, and events
+    Common use cases:
+        1) Resource optimization:
+            help in identifying under or over-utalized resources
+        2) Infrastructure monitoring and troubleshooting:
+            visualize metrics to understand trends and spot outliers 
+        3) Application monitoring:
+            create alerts that can be triggered on various metrics:
+                -health status, resource utalization, performance
+        4) Log analytics:
+            search and visualize metrics from various sources
+    
+    Cloudwatch metrics:
+        a cloudwatch metric is a data point associated with a timestamp, metrics can be plotted on a graph
+        ** Metrics can be obtained fron aws and non aws based resources such as on-prem servers
+        ** metrics are stored for up to 15 months
+    Cloudwatch alarms:
+        an alarm watches a single metric and will trigger an alarm when the associated threashold is breached for 
+        a set amount of time
+        notification mechanisms:
+            1) Simple notification service:
+                pub-sub message system where AWS publishes messages to a topic and is then consumed from a 
+                registered consumer. 
+                Notification protocols:
+                    - HTTP(S), lambda, SMS text messages, SQS, Email, Email-JSON, Mobile push notification
+            2) Auto scaling action:
+                trigger the scaling of an ec2 instacne based on the metric
+            3) EC2 action:
+                an action can be stop, terminate, or recover the instance
+    Cloudwatch Dashboards:
+        keep an eye on specific metrics on a single dashboard pane.
+        Metrics can be monitored from multiple regions at the same time, and dashboards can be shared
+    Cloudwatch Logs:
+        Make it possible to collect logs from aws and non aws sources
+        Log Eventss, Streams and Groups:
+            log events are generated from a source, each log event contains a timestamp
+                ** vended logs are what are always produced from an AWS service such as route 53 dns querries
+            log events that are sent from a source a piped to a singel event stream. The event stream contains logs from 
+            a singel source.
+            A group of streams can be colated to a group.
+            ** logs are kept indefinetly by default but can have a retention period from 1 day to 10 years set
+            ** logs can be shipt to s3
+        Metric filters:
+            extract metrics from log events in log groups by filtering out information related to a metric
+            Examples:
+                filter out a response time from a specific log
+                count 403 counts in a log message
+            ** metrics that are extracted with filtes are ALWAYS numeric
+    Cloudwatch Events:
+        provide the capability to trigger specific actions based on the presence of an event being triggered
+        such as an ec2 instance terminating.
+        Valid targets for an event action:
+            - Lambda, ec2 instance, sns, ecs task, sqs
+        Events can be scheduled to be triggered at a fixed interval
+        ** events are fired immediatly unlike alarms that are time based
+
+CloudTrail:
+    Every action taken upon an aws resource is tracked and logged. Each of these logs contais:
+        - ip of called
+        - request action
+        - principal( user or role who made the call )
+        - service being used
+        - region of service 
+        - result of api call
+        - date and time of action
+    API and non API events:
+        api calls are actions taken upon service resources, non api calls are things such as logging into the console
+        all are tracked in CloudTrail
+    Management and Data Events:
+        cloudtrail classifies events along two dimmensions:
+            1) management(control plane operations): actions taken by a user or role that are done against an AWS resource
+                - only capture write-only events such as modifying an ec2 instance
+            2) data events(data plane): actions taken on stuff like s3 or lambda executions
+                - only capture read-only events like getting objects from a bucket
+    Event History:
+        Location of all events collected over the past 90 days
+        ** events are isolated by region and only management events are captured in event history
+    Trails:
+        Can establish a trail that logs specific event
+        ** can log from a single or multiple regions
+        ** can configure to log management and data events
+        Events can be shipped to s3 or cloudwatch for metric filtering
+    ** log integrity are kept intact by each one being stored in s3 with a hash
+    ** logs can be encrypted using the various s3 encryption options: sse-s3, sse-kms
+
+Cost Explorer:
+    offer reports that can be visualized in graphs:
+        3 report types:
+            - cost and usage, reservation reports, reserved instance recommendations
+            1) cost and usage:
+                generate graphs that can show historic and predicted spending over a period of 12 months
+                there are 5 default cost and usage reports:
+                    - monthly cost by service, monthly cost by linked account, monthly ec2 instance hours cost and usage
+                        daily cost, aws marketplace
+            2) reservation reports:
+                how much are saving or could be saving by using reserved instances
+                2 types of reports:
+                    - reserved instance utilization, reserved instance coverage
+            3) reserved instance recommendations:  
+                cost explorer will monitor on-demand instance usage and what savings would be if converted to reserved instances
+
+Summary:
+    AWS provides a couple ways to interact with its services and resources. First being the dashboard which can be logged into by the root account, 
+    or an iam user providing their account id, alias, and
+    password. Second being the mobile application, and lastly being the CLI/SDK's for programmatic access. 
+    Amazon's range of SDK support is huge: .net, java, ruby, javascript, node.js, python, and go, they also
+    have an sdk for mobile applications, with one of them being AWS Amplify for quick development, 
+    and lastly an SDK for IoT devices. Observability of whats in the cloud is important and AWS provides cloudwatch 
+    that can help in the viewing of whats going on in an account. CloudWatch collects metrics, 
+    which are a data point holding a value provided a timestamp, these metrics can be colated onto a dashboard for 
+    trend viewing and anomoly detection. Metrics can be bound to a cloudwatch alarm that triggers 
+    an alert when a metric breaches a threshold for a specified amount of time. Alerts can fire to an SNS topic, an auto-scaling action to 
+    scale up a service, or to an ec2 action. Cloudwatch provides the ability to collect logs from various sources being in aws and on-premis. 
+    Logs can be turned into streams which are from the same source, and multiple
+    streams can be combined to form a log group. 
+    Cloudwatch logs can be ran through metric filtering for inspecting lines and extracting valuable information from them.
+    Logs can be kept indefinetly or have a reservation period specified from 1 day to 10 years.CloudWatch events are similar to alarms but they are fired immediatly on receiving an event.
+    Events are tied to a target such as lambda, ec2, sns,... sqq. CloudTrail is a service used for observing who is doing what to the account. 
+    CloudTrail tracks every action done to the account in a log that holds valuable information such as principal, service, action being done, response of action, ip of sender, and 
+    the region of action. If it is desired to watch specific event logs a trail can be created that will monitor the event and ship to s3 or a cloudwatch metric for filtering. 
+    CloudTrail holds events for up to 90 days. Cost explorer is a dashboard service for observing spending trends in the account. 
+    Use cost explorer to view cost and usage, reservation reports, and reservation recommendations.
+        

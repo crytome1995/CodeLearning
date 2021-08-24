@@ -1,0 +1,34 @@
+GETTING STARTED WITH TERRAFORM
+
+Terraform init downloads the providers code to be used with resources
+
+Multi-line:
+    <<-EOF EOF: Terraforms heredoc that allows for writing multiple
+    lines without having to prodive newline
+
+Expressions: anything in terraform that returns a value
+    Reference expression: get a value from a resource
+        Format: <provider_resource>.<resource_name>.<value>
+        Resource references create implicit dependencies 
+
+Terraform apply: shows what will happen when applying the terraform code
+    +: what will be added
+    -: what will be removed
+    ~: what will be changed in-place
+
+Varibable:
+    input for a module
+    holds 3 properties:
+        - description
+        - default
+        - type: primatives/objects:lists map
+    
+    * can provide variables through CLI or through a var file 
+    * veriable reference: var.<variable_name>
+    * referecomg varoabeles in strings requires interpolation:
+        ${...}
+
+Output:
+    terraform output: lists the output without applying changes
+        * can pass an output variable name to get specific
+        

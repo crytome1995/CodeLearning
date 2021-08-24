@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/whitelist-source-range: 68.201.66.56/32,192.30.252.0/22,185.199.108.0/22,140.82.112.0/20,143.55.64.0/20
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+
+  labels:
+    app: argocd
+  name: argocd-ui
+  namespace: argocd
+spec:
+  rules:
+    - host: argocd.control.clickthebutton.click
+      http:
+        paths:
+          - backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - argocd.control.clickthebutton.click
+      secretName: argocd-tls # do not change, this is provided by Argo CD
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/whitelist-source-range: 68.201.66.56/32,192.30.252.0/22,185.199.108.0/22,140.82.112.0/20,143.55.64.0/20
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+  labels:
+    app: argocd
+  name: argocd-grpc
+  namespace: argocd
+spec:
+  rules:
+    - host: grpc.argocd.control.clickthebutton.click
+      http:
+        paths:
+          - backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - grpc.argocd.control.clickthebutton.click
+      secretName: argocd-tls # do not change, this is provided by Argo CD

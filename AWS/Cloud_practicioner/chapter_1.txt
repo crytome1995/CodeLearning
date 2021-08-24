@@ -1,0 +1,43 @@
+THE CLOUD:
+
+5 pillars of well architected framework
+1) Operational excellence:
+    - Addapt from failure
+    - Make small code changes
+    - Automate infrastructure 
+2) Security:
+    - Adopt security across the design process
+3) Reliability:
+    - Recovery from failure
+    - monitor the application
+    - Adapt to demands on the application
+4) Performance efficiency:
+    - Never get latched down to a solution
+    - always look to optomize
+    - continue to adapt to change in an architecture
+
+5) Cost optomization:
+    - construct a pricing model
+    - evaluate expenses
+
+
+AWS:
+
+Virtualization:
+    - Aws holds numerous servers to allow the virtualization of servers for customers 
+    to use
+        - This allows for:
+            - Speed: Servers can come up in minutes as they sit ontop of a host
+            - Efficiency: A single server can host numerous VM's
+
+Cloud Platform Models:
+    1) Infrastructure as a service:
+        Examples include: EC2, EBS, ELB
+            The customer has more control on how to secure and implement the underlying asset
+    2) Platform as a service:
+        Examples include: Elastic beanstalk, Elastic container service
+            The customer only has to worry about the application code that sits on the infrastructure
+    3) Software as a service:
+        Examples include: AWS SES
+            The platform has complete control of the entire environment and a user simply uses
+    4) Serverless: LAMBDA

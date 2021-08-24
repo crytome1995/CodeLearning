@@ -1,0 +1,75 @@
+Amazon GuardDuty:
+    AWS service to monitor malicious activity that can be happening on the account such as s3
+
+AWS CloudHSM:
+    cloud based hardware security module
+    Give complete control to the generation and managment of cryptographic keys that are stored in AWS
+
+AWS Cloud9:
+    Run/test/debug code on AWS through an IDE installed on an EC2 instance
+    Select instance type for the environment
+    Can provision own server to host IDE
+    Automatic cost-saving options based on inactivity
+    Code build on cloud9 is not backed up so use own managed SVM
+
+AWS Direct connect:
+    To establish a direct connect a public virtual interface is required with BGP routing protocol
+
+AWS S3:
+    Object lock will prevent deletion of an object
+
+AWS Data Sync:
+    Simple and fast way to move large amounts of data to s3,EFS, and FSx
+
+AWS Redshift:
+    Managed RDS used for analytical workloads on datasets 
+
+AWS Aurora:
+    faster than MySQL
+    Can scale up to 128TB
+
+AWS Budgets:
+    Allowed 2 free budgets
+
+AWS WAF:
+    protect web applications from common web exploits such
+    can integrate with cloudfront and an application load balancer, api-gateway, and appsync
+
+AWS Shield:
+    fully managed service to prevent DDOS attacks
+
+    AWS Shield provides protection at cloudfront and Route53
+
+    AWS Shield advanced: allows for ddos protection on ec2, and also global accelerator
+
+Savings Plans:
+    offer a pricing model by commiting to a specific compute usage
+    Can save up to 72%
+    Savings plans are not available for all regions
+
+AWS EFS:
+    regional service
+
+AWS Quicksight
+    BI intelligent service
+    Build dashboards for analytics
+    Specify a data source for collecting data for analytics
+    SPICE: where data is ingested to for calculation
+
+Amazon Rekognition:
+    Identity recognition system
+
+AWS Systems Manager:
+    Manage reousrces across multiple AWS Regions
+
+AWS Resource groups:
+    Manage reources in a single AWS region
+
+AWS CloudTrail:
+    should be used for showing governance of the cloud
+
+Amazon Redshift:
+    Master node handles queries
+
+AWS CloudHSM:
+    can offload SSL/TLS authentication to the HSM server which can reduce the burden of storing private key on the server

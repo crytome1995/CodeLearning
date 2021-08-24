@@ -1,0 +1,99 @@
+THE CORE COMPUTE SERVICE
+
+Deploying Amazon Elastic Compute Cloud Servers:
+    AMI's, Instance Types, and EBS volumes make up an EC2 configuration
+    Amazon Machine Images:
+        AMI's are images that can be copied to a storage volume that then provide a functioning
+        operating system for the VM
+        ** AMI's are available in popular distributions such a RHEL, Amazon Linux, and Windows
+        AMI's can be optained from 4 places: Quick Start, Custom, Marketplace, and Community AMI'S
+
+        1) Quick Start AMI's:
+            provides several operating systems to choose from, with a couple being in the free tier.
+            Some AMI's a stated as long term support meaning that they will be patched for 5 years past release
+        2) AWS MarketPlace and Community AMI's:
+            Vendors make it possible to use AMI's from major sources such as Apache, by packaging their AMI's
+            and making them available on the marketplace
+            ** Makretplace also provides stuff like cloudformation stacks
+            Simple users can also build AMI's for use on the marketplace
+        3) Creating own AMI:
+            An AMI can be created from an instance by creating a snapshot of the instances EBS Boot volume
+            This AMI then becomes available as a private AMI
+        
+        EC2 Instance Types:
+            An instance type determines the memory, vCPU cores, and networking power
+            ** vCPU is AWS syntax for CPU
+            There are various instance categroies such as
+                - Genral purpose, compute optomized, memory optomized, storage aptomized, accelerated computing
+            Dedicated instance/host:
+                If requested the ec2 instance will be deployed to an underlying machine that is completely isolated
+                from other EC2 instances in the cloud which can be used for compliance reasons
+        
+        Server Storage: EBS and Instance Store:
+            resources used by instances are carved from the host server
+            EBS:
+                These are storage volumes that do not live directly connected to the host operating system
+                EBS volumes talk to EC2 instances over the wire
+                EBS vs Instance Store:
+                    - live after shutdown
+                    - can be encrypted
+                    - can be unmounted and mounted to another instace
+            Instance Store:
+                Attached directly to the hosts server that allow for lower latency but without features of EBS
+            
+EC2 Pricing Models:
+    On-Demand Instances:
+        most expensive pricing and pay for what is running
+    Reserved Instances:
+        Users can place reservations that they are no longer using on the marketplace to be purchased for a fixed contract time period
+        ** Payment options: All up front, partial upfront, no upfront, with the more payed upfront the cheaper
+    Spot-Instances:
+        Use for non-critical sporatic deployment operations
+        Request instances as part of a spot fleet in the EC2 spot market to help in orchestrating complex deployment models
+        ** spot instances reserved capacity can be reclaimed on two minutes notice and the instacne will be killed
+
+Simplifying Deployments through Managed Services:
+    A service that handles managing the entire stack except for the underlying application code is a managed deployment:
+        Aamazon Lightsale:
+            Service for getting feet wet in the cloud
+            Provides blueprints for common deployment stacks:
+                - LAMP: linux/appache/mysql/php
+                - MEAN: mongo/express/angular/node
+            Only a few options are available for configuration:
+                - Operaiting system
+                - Application
+                - Stacks
+            ** can be converted to ec2 infrastructure if needed
+        AWS Elastic Beanstalk:
+            A managed deployment service where you provide the code, select the environment, and AWS will handles
+            bringing up the infrastructure and also scaling the deployment based on needs
+            ** pay for what you use
+            ** do not specify resources as EBS scales for you
+
+Deploying Container and Serverless Workloads:
+    EC2 are expensive compared to containers that don't require their own os kernel
+    Containers:
+        Can allow AWS to provision infrastructure for your containers through:
+            - ECS
+            - EKS: uses kubernetes
+        
+    Serverless Functions:
+        Smaller footprint than containers and are ran by setting and environment and providing source code
+        ** functions bill based on execution time to the MS and have a timeout of 15 minutes
+        ** can be triggered by numerous sources
+
+Summary:
+    AMI's define the building block of what makes up the ec2 instance on boot time. AMI's are available in many os flavors and can be found on the AWS marketplace,
+     AMI community marketplace, and can even go about setting up custom AMI's based on an EBS snapshot. 
+    Provisioning an EC2 instance requires understanding the memory, networking, and security of the instance. When it comes to memory and EC2 instance can
+    be backed by a EBS that is not attached to the physical host, but offers encryption, snapshot ability, non-volitie, and moveable storage. 
+    Instance store allows for quick access memory that is attached to the host machine, but dies when the instance is shut down. Deciding the type of instance to use is critical. 
+    AWS provides different types of instance types: compute optomized, netowkr optomized, accelerated computing, storage optomized.
+    There are three pricing models that AWS uses. On-demand instances are the most expensive and are a pay for the time used model.
+     Reserved instances are cheaper and are used by people that sell reserved capacity on the AWS marketplace. Payment models for reserved are: all upfront, partial upfront and no upfront. 
+    Paying for more upfront gets a better discount. Spot instances should be used for non-critical operations since they can be shutdown with only 
+    2 minutes warning and a spot fleet can be configured to deploy complicated systems using spot instances. 
+    There are two managed services that make deploying application code on ec2 instances a breeze. Lightsale goes about handling the entire
+    infrastructure setup by providing blueprints to select from. Lightsale provides different stacks such as LAMP and MEAN stacks. Elasticbeanstalk is even simpler by  requiring the selection of an 
+    environment and providing some application code to run on. AWS also provides some serverless services such as ECS and EKS that allow for the deployment of docker containers while 
+    AWS manages the infrastructure.

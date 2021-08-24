@@ -1,0 +1,6 @@
+:= vs var
+
+:= (short variable declaration)
+    specify a variable without a type
+    * can not use := to a variable that has already been declared *
+var can be used to decalre a type 

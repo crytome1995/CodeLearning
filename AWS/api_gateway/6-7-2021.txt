@@ -1,0 +1,3 @@
+Use resource policies to restrict access to API by many different criterias...
+    EXAMPLE:
+        

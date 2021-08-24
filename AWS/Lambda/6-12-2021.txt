@@ -1,0 +1,1 @@
+Avoid packaging all dependencies and only package what si required

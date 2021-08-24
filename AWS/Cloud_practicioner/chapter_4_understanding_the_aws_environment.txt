@@ -1,0 +1,85 @@
+UNDERSTANDING THE AWS ENVIRONMENT
+
+AWS Global Infrastructure
+    1) AWS Regions:
+        Each region is a self isolated group of data centers spread across the world
+            ** There are some regions not accesible to everyone such as the US GOV region
+        
+        Regionally based services:
+            Most services are deployed in a specific region
+                Regions can provide support for:
+                    - Putting content closer to the consumers
+                    - Geographic compliance
+                    - Isolating resources in seperate regions for extra secuirty
+        Global based services:
+            Services that are typically deployed to a region but a few are listed as global:
+                - s3
+                - IAM
+                - CloudFront: content delivery service located on edge locations
+        Service Endpoints:
+            Each service be it s3 can be interacted with through a endpoint that is identified by the service followed by the region it is located
+    2) Availability Zones:
+        Each region contains atleast two Availability zones that each have their own isolated data center's
+
+        Availability Zone Designations:
+            An availability zone is typically used to designate resources to
+                us-east-1a is the first AZ in the us-east-1 region
+            ** When specifying a AZ AWS makes sure to randomzie the list in-order to keep usage spread across the AZ's
+        Availability Zone Networking:
+            When settings up networking on AWS, subnets are the dividing unit for resources in a specific AZ
+                - Subnets are isolated IP ranges that allow for communication through all IP's in that subnet
+                ** AWS restricts 200 Subnets per AZ
+        Availability Zone and High Availability:
+            ** it is important to place resources in geo-graphically seperate areas to avoid a single point of failure
+            Autoscaling: bringing resources up and down based on demand
+            LoadBalancing: Distributing traffic across servers
+            Fault Tolerance: Having a backup server on standbye incase of failure of the primary
+    3) Edge Locations:
+        A focused server designed to provide high speed content through the network
+        1) Edge location and cloudfront:
+            Amazons content delivery network can provide a useful caching mechanism to deliver static content to users instead of having to retrive content from the source 
+            ** Other edge use cases:
+                - Route 53
+                - Lambda edge
+                - WAF (web appliction firewall)
+                - Sheild
+        2) Regional Edge locations:
+            After resources are determined to be stale, they can be moved from an edge location to a regional edge location. 
+            * The response time is not as fast as an edge location but is still faster than going to the backend still
+
+AWS Shared Responsiblity Model:
+    There is a clear distinction between what AWS is responsible for and what the customer is responsible for:
+        AWS is responsible for THE CLOUD:
+            - Securing host systems
+            - Global infrastructure
+            - Patching the host systems
+        Customers are reponsbile for:
+            - Securing data
+            - Applications and access to Applications
+            - Locking down network acess
+    1) Managed Resources:
+        When it comes to bringing up a service and only having to worry about using it and not maintaining this is a sign of a managed resource such as RDS
+        ** Another good example is elastic beanstalk that is fully managed by AWS
+        ** what ever the user can touch is their responsibility ** 
+    2) Unmanaged Resources:
+        When configuration to the system, operating system, settings, turning on and off, and securing the instance this is an example of a managed resource like EC2 instances
+    3) Service Health Status:
+        AWS provides a status website that will always report outages in a region
+    4) AWS Acceptable use policy:
+        AWS does not permit illegal activities and reservers the rite to terminate an account if found to be doing so. Even penetration tests can go against the policy.
+
+Summary:
+    AWS has three primary global infrastructure concepts. The first being a region which is an isolation of resources. Regions are important to understand because resources deployed in 
+    different
+    regions are completely isolated from eachother. Typically resource URL contain the name of the service followed by the region. Contained within regions 
+    are availability zones that provide fault tolerance
+    within a region. There are at minimum 2 AZ's in a region each holding their own isolated data center. Availability zones can have resources scoped to a 
+    specific AZ for example subnets. Finally, edge locations are server locations
+    that provide fast content delivery systems like cloudfront, lambda edge, route53, shield. After some time resources in edge locations are removed from cache,
+     but regional edge locations can
+    be setup to hold this expired data for fixed time. Not as fast as edge locations. These concepts allow customers to place resources in areas to comply with; regulatory means,
+    geographical means, and security. When using AWS there are responsiblites that are taken both on the customer and AWS side. AWS will make sure
+    to maintain the cloud and make sure the systems stay secure and patched; while the customer must make sure that the services being used are kept secure.
+     Managed resources are AWS services that
+    allow for the customer to be assured that AWS will keep the resource up to date and up at all times so the user only has to worry about using the resource like RDS.
+    Unmanaged resources are resources that the customer has full responsiblity on patching, configuring, and securing of the resource like EC2 instances.

@@ -1,0 +1,8 @@
+Can apply a subscription filter policy to a subscription
+    This makes it so only certail events are sent to a subscription based
+    on some form of criterial... example:
+        {
+            "userName" : [
+                "ethan.lebioda@gmail.com"
+            ]
+        }

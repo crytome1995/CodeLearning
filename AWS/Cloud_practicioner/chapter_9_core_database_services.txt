@@ -1,0 +1,169 @@
+CORE DATABASE SERVICES
+
+Database models:
+    relational and non relational databases:
+        1) relational:
+            Should be used for predictable and well defined format data-sets
+            Concepts:
+                colums are called attributes
+                rows are called records
+                records are contained in a table
+                ** each record must be unqiue identified by columns that are the primary key
+                ** each attribute has it's data-type pre-defined
+            ** Ideal for performing complex queries
+            Structured Query Language:
+                Relational databases use SQL to interact with database tables
+                Two common statements:
+                    - Select: SELECT grab information from a table in a format, can combine with join to merge data from 
+                        multiple tables
+                    - insert: INSERT adds data to a table
+        2) non-releational:
+            when data is not well-defined nor predicatble in format it is ideal to use a non-relatgional database
+            Data is said to be un-structured and schemaless
+            ** Ideal for read/write intensive workloads that perform well defined queries
+            Concepts:
+                Tables store collections of items
+                A item is defined by a primary key
+            queries require searching through every item in a table
+
+AWS RDS:
+    a fully managed database service
+    Supported relational database management systems:
+        Microsoft SQL, Postgres, MYSQL, Oracle
+    AWS will handle configuring the database instances, patching the software
+    RDS instances are deployed in a VPC and are backed by EBS volumes
+    ** EBS volumes can be backedup through snapshots
+    ** For HA compliance instances can be deployed across AZ's (multi-az)
+    Databse Engines:
+        When deploying a RDS a RDBMS must be chosen for the instances
+        Supported engines:
+            - MYSQL, MariaDB, Oracele, Postgres, Microsoft SQL, Amazon Aurora
+            ** Only one RDBMS per RDS instance
+    Licensing:
+        Must chose a licensing option depending on the RDBMS:
+            1) License included:
+                license is included in the pricing for the RDS instance
+            2) Bring your own license:
+                must provide own licesne to operate the database
+                ** only used with oracle database engine
+    Instance classes:
+        When chosing a RDS instance take into concideration: memory, cpu count, and the max network and storage throughput 
+        Three types of instance classes:
+            1) Standard: 
+                will meet most needs:
+                    - 2-96 vCPU
+                    - 8-384 GB memeory
+            2) Memory Optimized:
+                should be used only for the most demanding requirements
+                Provides the most io throughput and network bandwidth:
+                    - 4-128 vCPU
+                    - 122-3904 GB memory
+            3) Burstable performance:
+                should be used for non-production like environments
+                provides the least amount of compute and memory:
+                    - 2-8 vCPU
+                    - 1-32 GB memory
+    To make sizing easier RDS supports vertical and horizontal scaling of instances:
+        1) Vertical scaling:
+            RDS allows scaling up or down to the next instance class
+            Storage:
+                RDS instances are backed by EBS volumes to hold the data
+                The number of IOPS your EBS volume has greatly effects the read/write operations of the DB
+                Three types of EBS storage types for RDS:
+                    1) General-purpose SSD:
+                        will handle most database needs
+                        ** can be sized between 20GB - 32 TB
+                        The number of IOPS depends on the amount of storage requested
+                        ** General purpose SSDs support bursting, providing additional IOPS, during spikes of IO activity
+                    2) Provisioned IOPS SSD:
+                        Support configuring the number of IOPS(in thousands) the volume should provision
+                        Supports up to 32 TB, but does not support bursting
+                        ** IOPS can be changed 
+                    3) Magnetic:
+                        Supported to be used with legacy systems
+                        Tapes can support 4TB and 1000 IOPS
+                        Can increase the tape size, but can not decrease
+                        ** Can migrate magnetic volume class to SSD, but this can take days with some service disruption
+        2) Horizontal Scaling with read replicas:
+            horizontal scaling  can be achieved through creating read replicas
+            A master instance is only allowed to perform write operations, while all read operations
+            are put through the read replicas
+            ** useful for read intensive queries
+    High Availability with Multi-AZ:
+        To prevent the case of a SPOF, RDS allows the multi-az configuration, this configuration
+        creates a standby database instance that will be used in the case of the primary failure
+        Data from the primary is automatically replicated to the standbye
+        ** Using multi-az RDS can achieve an availability of 99.95%
+        ** during roll-over there can be a few minutes of interruption with no data loss
+        Aurora:
+            Amazons proprietary RDS service uses a cluster model for its instances and the instances share 
+            an EBS volume that is replicated across AZ's
+            ** cluster can scale the volume up to 64TB
+    Backup and Recovery:
+        even if not using multi-az, manual and automatic RDS EBS snapshots can be configured
+        manual snapshots can be applied to a RDS instance at anytime, and must be deleted manually
+        Automatic backups can be configured to occur during time windows
+        ** AWS RDS will retain backups between 1-35 days with a default of 7 days
+        ** enabling automatic snapshots enables point-in-time-recovery that will backup change logs every 5 minutes
+            resulting in an instance only being able to lose 5 minutes worth of data
+    Determining your Recovery Point Objective:
+        Recovery point objective(RPO): how much data loss can be sustained
+        Snapshots are for recovering data
+        Multi-AZ is used for availability
+        ** for strict RPO's use both multi-az and replicas with point-in-time-recovery
+        ** for lessv strict RPO's snapshot replicas would suffice
+
+DynamoDB:
+    designed for non-relational data that demands high read and write throughput
+    Items and Tables:
+        items make up the rows of a dynamodb table
+        items are grouped into partitions that sit on SSD which are replicated across AZ'S
+        ** Dynamo has an availability of 99.99%
+        items are made up of attributes and attributes must have a type assocaited:
+            1) scalar: only one value and can be a string, number, binary, or boolean
+            2) Set: can have multiple scalar values but each must be unique
+            3) Document:   
+                used for storing structured data
+                broken down to two types:
+                    - list: orderd
+                    - map: not ordered
+    Scaling Horizontally:
+        primary keys are used to distribute items across partitions.
+        ** The number of partitions allocated to a table is determined by the WCU and RCU
+        WCU and RCU can be changed on a table, but auto-scaling can also be enabled to accomodate demand
+    Queries and Scans:
+        Query: searching for a primary key
+        Scan: searching for an item that contains an attribute value requires searching all items in a table
+        ** scans consume more than queries
+Amazon Redshift:
+    managed datawarehouse for relation database storage
+    ** used for complex quieres and analytics
+    A redshift cluster can contain from 1 compute node to 128 nodes in a cluster
+    Dense compute nodes store up to 326 TB of data on magnetic disks
+    Dense storage nodes can store up to 2 PB of data on SSDs
+    ** can pull data from using redshift spectrum S3 but the schema must be structured and told to redshift in advance
+
+Summary:
+    AWS provides various database services that are fully managed for relational and non-relational data. Relational data has a defined structure and non-relational is said to 
+    be schemaless. Relational databases use attributes as columns and records as rows. non-relational data is contained in tables each row is called an item. AWS has RDS for its managed
+    relation database services. AWS handles the infrastructure provisioning and patching. A few RDBMS AWS provides is Microsoft SQL, Oracle, Postgres, MySQL, Aurora. When picking a RDS 
+    RDBMS all except Oracle come with a license included that is added to the cost oracle use requires a bring your own license that is not included in the cost. After picking A
+    RDBMS it is important to understand the instance class that the instances will be using. Things like compute, memory, and network should be concidered. RDS provides a standard
+    instance class that is suitable for most databases, there is also a memory optomized class for read/write intensive databases, and burstable class that is designed for less
+    critical databases such as a dev or test environment. Every RDS instance is backed by an EBS volume that holds the data. When determining the read/write throughput of the database
+    the type of EBS volume is important. General purpose SSD's can support most needs and receive more IOPS the more storage reserved. General purpose SSD's benefit from bursting
+    that provisions more IOPS during peak times. Provisioned IOPS EBS volume type has its IOPS configured by the thousands, which can continue to be configured, but does not receive
+    the bursting ability general purpose SSD's do. Magnet types are kept around for legacy databases and allow for scaling out the volume size, but do not allow scaling in. Magnetic
+    types can be converted to SSD at the cost of some downtime with no dataloss. Once the volume type has been locked down RDS provides various options for horizontal and vertical scaling
+    capabilities. For vertical scaling it is possible to scale up and down to different storage classess. For horizontal scaling read replicas can be created which act as a read only 
+    instance while a master instance handles all write requests. Another important feature is high availability and RDS provides a multi-az setting that will deploy a standby RDS instance
+    incase the master instance fails. The backup instances data is always in-sync with the master. Usigng multi-az 
+    can achieve an availability of 99.95%. AWS aurora is a cluster based RDS RDBMS
+    that handles HA by having a single ebs volume that is replicate  across AZ's used by multiple nodes. Keeping data durable is also important and RDS allows the creation of manual snapshots
+    and automatic snapshots that provide point in time recovery within the past 5 minutes. DynamoDB is AWS non-relational managed database service. DynamoDB does not require data
+    to be pre-defined, but attributes must have a type such as scalar, set, or document, and each item must have a unique primary key. Primary keys are grouped into partitions which are
+    EBS backed storage and is replicated across AZ's that gives Dynamo 99.99% availability. When it comes to scaling dynamo, the RCU and WCU determine the number of partitions the
+    table has which affects the throughput of the table. Dynamo supports autoscaling. AWS Redshift is a managed data warehouse for use with current relational databases, or s3 . 
+    Redshift clusters are made of dense compute nodes, and dense storage nodes, each having different storage limits.  
+        
+

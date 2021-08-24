@@ -1,0 +1,170 @@
+CORE NETWORKING SERVICES
+
+Virtual Private Cloud:
+    VPC's are virtual networks that are isolated from other networks
+    ** AWS Creates a default vpc in each region for an account that allows ec2
+    instaces to access the internet
+
+    VPC CIDR Blocks:
+        Each VPC requires a classless inter domain routing block (CIDR) 
+        ** Each cidr prefix can be from /16 - /28
+        AWS can provision a IPv6 block for a vpc if needed
+    
+    Subnets:
+        A VPC requires subnets to deploy Ec2 instances to
+        ** A subnet is a subset of the VPC's cidr block
+    
+    Internet Access:
+        In order to give ec2 instances internet access and a public IP address:
+            Internet gateway: resource to give ec2 instances public IP addresses
+            ** must assign the default route of the subnet in the vpc to the internet gateway
+            ** A subnet with routing to an internet gateway is a public subnet
+            Elastic IP:
+                can be allocated to an EC2 instance, but can re-assigned to an ec2 instance as well
+            AWS can automatically assign IP's if needed
+    
+    Security Groups:
+        Firewall that controlls access to EC2 instances
+        ** security groups have inbound and outbound rules
+        Security groups have no initial inbound rules, and allow all outbound traffic by default
+        Each ec2 instance must be attached to a security group
+        ** Every VPC contains a default security group
+    
+    Network Access Control Lists:
+        A firewall that controlls access to the subnets themselves
+        ** consists of inbound and outbound rules that allow all inbound by default
+
+    VPC Peering:
+        Allows for different resources in different vpc's to communincate with eachother over a private network
+        and not over the internet
+        ** VPC does not need internet connetivity to use VPC peering
+        ** can peer to vpcs in different regions
+    
+    Virtual Private Network:
+        A point to point private connectiong to resources outside AWS such as a datacenter
+        Setup:
+            - Create a virtual private gateway and attach it to the vpc
+            - Configure the on-premise router to connect to the virtual prviate gateway
+        ** VPN connections use AES-128 or 256 bit encryption for communication
+        IP routing:
+            - can be static or configured dynamically through BGP border gateway protocol
+        ** A VPN can support 10 VPN connections 
+    
+    Direct Connect:
+        Provides a network connection to AWS services without having to go through the internet
+        Obtain a direct connect through AWS partner network (APN) partners
+        ** Operates at a speed of 1 0 10 GBps
+        If lesser speeds are needed a hosted direct connection can be optained through APN
+
+Route 53:
+    AWS domain name resolution service that is responsible for the translation of human
+    readable names to ip addresses through name translation
+    Resource records:
+        fore route53 DNS to work a name(alias), type, and value must be assigned to a record
+        a record can point to:
+            - arbitrary text, a mail server, ipv4, and ipv6 addresses
+    Domain Name registration:
+        a domain name registrar contains top level domains (TLD) for people to register in their name
+        ** no two domains can be owned by the same person
+        Registering a domain gives the lease between 1 to 10 years
+        ** can transfer an owned dns to route 53 
+    
+    Hosted Zones:
+        A hosted zone is created used to host the registered domain name
+        Route 53 supports private hosted zone that allow communication within VPC'S
+        ** private hosted zones are not accessible from the internet and are not available outside the VPC selected
+    Routing policies:
+        routing policies handle routing dynamically to avoid failuers
+        1) Simple:
+            points the DNS to a static value
+            ** does not check if the resource is reachable
+        2) Weighted:
+            - distributes traffic for example by a percentage
+        3) Latency:
+            - Sends the requests to the region closest to the caller
+        4) Failover:
+            - routes traffic to a primary, and to a secondary if primary is down
+        5) Geolocation:
+            - route traffic based on continent, country, or stated
+        6) Multivalue Answer:
+            - distributes traffic across all resources by returning all records at random
+    Health Checks:
+        Every routing policy except simple supports a healthcheck to make sure the target is valid
+        ** health check is configured to check ever 10 or 30 seconds
+        3 possible healthcheck mechanisms:
+            1) Endpoint:
+                configures a health check endpoint either on http,https, or tcp
+                ** route53 has various health checkers around the world and can be configured to use to check 
+                    reachability from around the world
+            2) Cloudwatch Alarm:
+                watch cloudwatch alarm status to determine state of a resource
+            3) Calculated:
+                Makes it possible to monitor multiple healthchecks to make a decision on routing
+    
+    Traffic Flow and Traffic Policies:
+        AWS Traffic flow allows the creation of traffic policies that represent traffic flow
+        ** gets rid of the administrative burden of configuring routing policies
+        The traffic policy is a diagram that can be applied to a domain name through a policy record
+        ** each policy record costs 50$ per month
+        ** can associate a geoproximity routing policy that applies based on how close a user is
+            to a geolocation
+    
+CloudFront:
+    Amazons content delivery network that speeds up the delivery of static and dynamic content by caching resources 
+    at edge locations
+    ** increases availability due to replicating of cache across multiple edge locations
+    Selecting an edge location:
+        - united states, canada, europe
+        - united states canada europe, asia and africa
+        - all edge locations 
+    A distribution defines the content cloudfront should cache:
+        1) Web distribution:
+            most common and is used for static and dynamic content such as web-pages, video files, or streaming video
+            - supports http and https access
+            ** point to an origin such as a webserver or an s3 bucket (bucket must be public)
+        2) Real-Time messaging protocol (RTMP): 
+            delivers audio or streaming video
+            ** select a media player and media files that must be in an s3 bucket
+
+Summary: 
+    AWS VPC is the primary network isolation mechanism for ec2 instances. A VPC is a cidr block that consists of subnets that each contain a subset of the vpc cidr. A VPC cidr support /16 - 28 range.
+    A subnet is considered a public subnet if it has a routing policy in its route table pointing to an internet gateway. This allow internet access to the subnet, and allows for ec2 instances to
+    obtain ip addresses. An elastic IP can also be configured for an ec2 isntace to make it reachable from the internat and can be transfered between ec2 instances. Security 
+    for a vpc is controlled through security groups, and network ACL. Security groups controll access to ec2 instances and have inbound and outbound rules. Every ec2 instance must be
+    assigned to a security group. Network ACL's controll access to subnets through inbound and outbound rules. Network ACL's allow all inbound by default. Each AWS account comes with
+    a default VPC in each region. VPC peering allows two VPC's to communicate with eachother over a protected channel and not over the internet. VPC peering supports peering VPC's in
+    different regions. A Virtual private network can be used to connect on prem services to a vpc through a virtual private gateway. The VPN communication is encypted through AWS 128
+    or 256 bit encryption. A VPC can support up to 10 VPN connections. Finally a VPC can use direct connect to connect a VPC to AWS resources without going through a public internet channel
+    A Direct connect channel is obtained through APN aws partner network partners and a dc channel support from 1 - 10 gbps. Route53 is AWS's DNS provider that handles as a domain registrar
+    and a dns resolver. Registering a domain is done through creating a hosted zone that can be public or private. Private hosted zones are not accessible from the internet and are
+    applied to a VPC. Each hosted zone has various records that are associated with some resource to be routed to. A resource can have a routing policy such as simple which is default
+    and does not include availability checking, weighted which routes based on percentage, latency based that takes into account a callers closeness to a region, failover that will
+    route based on availability of a primary or secondary target, geolocation that routes on continent, country, or state, and a multivalue answer that will route to all resources
+    in a random order. On top of routing health checks can be used to check the availability of a resource. Endpoint healthchecks point to a specific resource over http and https and 
+    support using specific health checker services to make sure geographic loctions can access the service. Cloudwatch Alarms monitor alarms from cloudwatch to
+    determine the health of a resource. Calculated health checks take into account multiple health checks to determine. DNS records can be purchased through AWS or brought in from
+    a third-party. AWS Traffic flow is a service that can be used for generating traffic policies that depict the overall traffic managment. Traffic policies are added to a policy
+    record to handle routing for traffic. CloudFront is AWS's content delivery network that provides a chaching mechanism for web content through edge locations. Edge locations
+    must be selected, and for content to be cached a distribution must be defined such as web or real time message protocol. A Web distribution must be from a web server or an s3
+    and a real time message protocol distribution must come from s3 and is used for video or audio streaming.
+
+1) b, D
+2) A
+3) b,C
+4) e security groups do not hold a default inbound rule but hold an outbound allowing all traffic
+5) b, D
+6) B
+7) a, B
+8) b, D
+9) B
+10) C
+11) C
+12) A
+13) B
+14) A
+15) A
+16) C
+17) B
+18) A
+19) B
+20) a, d

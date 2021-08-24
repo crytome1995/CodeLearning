@@ -1,0 +1,8 @@
+If calling an API and receive a unauthorized error, can take the aws sts decode-authorized-message
+to decode a message
+
+Can use the IAM policy simulator to simulate a custom IAM policy 
+    To simulate required are:
+        context key: keys to provide API calling
+
+EC2 instance profile role updates are applied instantly to EC2 instances

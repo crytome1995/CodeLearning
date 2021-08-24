@@ -1,0 +1,5 @@
+updates to deployments:
+    immutable: rolls out deployments to brand new instances keeping full capactiy
+    rolling: minor downtime rolls out versions in batches 
+    rolling-batch: roll out update with an additional batch
+    all-at-once: major downtime since the new version is pushed to all current instances

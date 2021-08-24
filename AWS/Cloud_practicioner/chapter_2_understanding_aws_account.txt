@@ -1,0 +1,59 @@
+UNDERSTANDING AWS ACCOUNT
+
+The Free Tier:
+    Gives a way for developers to get hands on with various aws services for Free
+    at no cost up to a certain usage point
+        - some services are free for the first year, others have a free tier indefinetly
+    
+Product Pricing:
+    AWS runs a pay-as-you-use model
+    
+    Calculating Pricing:
+        1) AWS Simple Monthly Calculator:
+            http://calculator.s3.amazonaws.com/index.html
+                - Handy webpage that allows the addition of resources expected to be used
+                based on time that then displays expected cost per month
+
+        2) AWS Total Cost Of Ownership Calculator:
+            Input the current enterprise infrastructure setup and AWS will compare
+            the price difference if the setup was moved to the Cloud
+
+Service Limits:
+    AWS places service limits across all of its resources to prohibit large companies
+    from consuming everything
+        - Some resources have adjustable limits that can be increased by contacting support
+        - Some resources have a non adjustable limit 
+
+Billing and Cost Managment:
+    1) AWS Billing Dashboard:
+        Provides a real time view of the current cost of services being used on AWS 
+            - Breaks each service down and how much it costs
+        Can view free tier usage consumption 
+    2) AWS Budgets:
+        Provides a way to track specified monetary spending thresholds and when breached send emails to alert of spending
+            - can track by:
+                1) monetary
+                2) usage
+AWS Organizations:
+    Service used for when a company needs to isolate accounts
+        - A root account controls all below accounts
+
+Monitoring Your Costs:
+    How to view current spending habbits of an account
+    1) Cost Explorer:
+        Highly customizable dashboard that allows the viwing of historical and current costs
+    2) Cost and Usage Reports
+        AWS service that can be used to create spending reports in CSV format that can be output to s3 for visualization
+    * Cost Allocation Tags:
+        Provide a way to track via the dashboard(Cost explorer) AWS resources and how the are impacting costs in the account
+            - AWS attachs default cost allocation tags, but custom ones can be applied
+
+Summary:
+    AWS allows for people to get hands on experience with services by providing generous free tier usage. Free tier usage such as t2.micro for 750 hours in a year. Some 
+    services have a free tier that persists after the end of the first year like cloudwatch and API gateway. Free tier usage can be viewed in the AWS billing dashbord. 
+    Every AWS services has a limit on the usage. This is to prevent peple from hogging all of the bandwidth. It is important to understand the spending going on in an account. 
+    To view spending AWS has the AWS Billing service that provides the current monthly spending which is broken down by service. In the Billing dashboard, alerts can be configured
+    through the Budgets function. Usage alerts are based on service usage, and monetary alerts are based on amount spent in a month. 
+    To understand What will be spent given a architecture desing AWS provides a AWS Simply monthly calculator. When deciding to move from on-premise to the cloud AWS provides the 
+    Total cost of ownership dashboard to compute current on premise spending and how the cost would differ when shifting to AWS cloud. To configure customizable dashboard for viewing spending AWS provides 
+    the cost explorer service, and the cost and usage reports service to produce reports in CSV format. 

@@ -1,0 +1,6 @@
+Go structs are a way to group data like classes
+
+type person struct {
+    name string
+    age int
+}

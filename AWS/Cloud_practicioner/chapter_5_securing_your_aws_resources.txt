@@ -1,0 +1,87 @@
+SECURING YOUR AWS RESOURCES
+
+AWS IAM:
+    provides all the basic tools to manage an accounts security through authentication and authorization features
+
+    Protecting the root user:
+        it is recommended to either disable root access keys, are enforce strict password typing and MFA for root user
+    
+    Authentication:
+        In order to access resources on AWS you must either provide a password/access keys/ or key pairs for ec2 instances
+            1) Passwords:
+                To ensure password stength IAM provdies a password policy that can be used to enforce passwords across IAM users
+                ** MFA: setting up will provide a second layer of security for your user accounts access
+                    - MFA requires a MFA device followed by an authenticator app installed on the device
+            2) Acess Keys:
+                provide CLI based access to AWS services
+                ** Access keys are comprised of an access key ID and a secret access key
+                Can be renewed through the dashboard
+            3) Secure shell key pairs:
+                provide the ability to interact with linux based ec2 instances through the ssh command
+                SSH tunnels make sure that communication to the terminal is encrypted
+                The private key is used to SSH to the server
+        USERS GROUPS AND ROLES:
+            1) Users:
+                Primary building block to giving people access to the AWS account
+                ** if replacing the root account, can provide a user with the AdministratorAcess policy to provide root user capabilities
+            2) Groups:
+                Provide a way to group users to similar permission sets
+                Users tied to a group automatically inherit permissions bound to the group
+                ** Removing policies from the group are automatically applied to the users attached to the group
+            3) Roles:
+                Used by services or applications not users
+                Each role is bound to a trusted entity: who can use this role
+                    - EC2 instances
+                    - identity providers
+                    - cognito 
+Federated Access:
+    Allows for encorporating already existing login procedures into the AWS cloud.
+    - AWS SSO: use a federated IDP to gain access to AWS resources
+    - AWS AD: use an external active directory to gain acess to AWS resources
+        ** AWS microsoft AD can be used to integrate with MS sharepoint, .NET, SQL based workloads
+
+IAM Credential Report:
+    Single button that provides a detail CSV file that displays:
+        - current users
+        - when users keys were last used
+        - last key rotation
+        - who has MFA settings
+        - last login
+
+Encryption:
+    When thinking about security on AWS think no further than AWS KMS
+    - KSM:
+        AWS service that provides keys for encyrpting date on AWS
+        KMS uses customer managed keys to encrypt data in AWS
+        * There are various things that benefit from encryption: s3, EBS volumes, RDS data
+        * EBS volumes can only be encrypted on creation
+        * S3: 
+            s3 has a couple options for encryption:
+                - SSE-S3: encryption keys are managed by s3 through KMS and encrypts each object in the s3 bucket
+                - SSE-KMS: encryption through KSM provided keys
+        Client side encryption is the process of generating keys client side, encrypting the data and then transmitting the data over the wire
+            - done through KMS customer managed master key or a client side master key
+
+AWS Artifact:
+    service for understanding and making sure your in compliance with certain regulatory requirements
+    Artifact: the compliance agreement provided by Amazon
+    Service organization controls: reports on audits on AWS infrastructure
+
+Summary:
+    AWS can be accessed through passwords, access keys, and ssh key pairs. Access keys are comprised of an access key id and a private access key. 
+    SSH key pairs are essential to setting a seucre tunel to an ec2 instace using the private key pair.
+    When it comes to controlling access, and securing resources AWS provides IAM and KMS to help with this task. 
+    AWS IAM is a highly avaialbe identity and access managmenet service for controlling
+    access to resources through users, groups, and roles. A user is someone who can log into the AWS console, 
+    or even use acess keys to access the CLI. When creating passwords for users IAM allows
+    for a password policy that enforces certain requirments on users passwords. Groups allow for defining permissions 
+    that can apply to multiple users rather than applying policies per user. Roles define
+    permissions that apply to services or applications. Each role must have a trusted identity that defines who can use this role. Federated access 
+    is the process of using external login processes to 
+    gain access to a system through and identity provider. AWS has a SSO in IAM that can utalize this external IDP to give accesss to AWS. When integrating 
+    an existing active directory use AWS AD or AWS microsoft AD for 
+    use with sharepoint, .net, or SQL based workloads. To understand what credentials are being used utalize 
+    IAM credential report that will generate a CSV file holding detailed informatio non how credentials are
+    being used in the account. AWS KMS is the service that is used for encrypting data. KMS uses customer managed keys to encrypt data. S3 data can be encrypted 
+    by using S3-SSE, S3-KMS. It is also possible to encrypt data on the clients side by using customer managed master keys.
+

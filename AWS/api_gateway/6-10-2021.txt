@@ -1,0 +1,4 @@
+Can use cognito and lambda as an authorization mechanism for method calls
+
+If looking to test out new API functionality, use a canary release:
+    will shift traffic to the new version
