@@ -1,0 +1,39 @@
+TERRAFORM STATE
+
+What is the state:
+    Reference to resources applied via terraform apply
+    Use terraform import and or terraform state to update the state file
+
+Problems with state files:
+    Shared storage for state files:
+        multiple people accessing the same state file
+    Locking state file:
+        How to lock the state file to avoid concurrent updates
+    Isolating state files:
+        Isolating environments to prevent updates to one from leaking into another
+
+Problem solution 1: Shared storage for state files:
+    - backend: where terraform stores the state file
+        Remote: a location that is outside the local machine such as cloud
+        Backend avoids the following issues:
+            1) Manual error: the remote backend will be used whenever
+                plan or apply is used
+            2) Locking: most remotes support locking which prevents two people from
+                applying changes to the same lock file
+                    * -lock-timeout=Time
+            3) Secrets: Most backends support encryption at rest and can even have ACL's set 
+                to restrict access
+    Defining a backend:
+        # requires a table and bucket to be pre-configured
+        terraform {
+            backend "s3" {
+                OPTIONS
+            }
+        }
+    Using the backend:
+        terraform init
+        * sets up the backend and will copy over the state if found locally
+    Backend Limitations:
+        1) the backend table and bucket must EXIST before the state can be pushed
+        2) backend does not support interrpolation
+        
