@@ -1,0 +1,57 @@
+What is an EC2:
+    scalable compute capacity that run on bare-metal servers
+        - Uses hyperviser on the host kernel that is in charge of running guest operating systems
+    Configurability for the OS:
+        - AMI & EC2 instance-type
+    SSH: handled through key-pairs
+        - aws holds onto the public key
+    
+    * EC2 Storage options:
+        1) Instance Store: Ephermeral(temporary)
+            - removed when instanced is stopped/terminated or hibernated
+        2) EBS volumes:
+            - keps reguardless of instance state
+    
+    * EC2 Networking and Security:
+        Security groups:
+            - protocols/ports/ip's that can reach ec2 instances in a VPC's subnet
+        Static IPv4 addresses:
+            - Elastic IP address that can be bound to an ec2
+
+AMI:
+    Information in-order to launch and instance
+    Included in an AMI:
+        1) One or more EBS snapshots: used to configure ec2 instance on launche
+        OR 
+        1) Instance Store
+        2) Launch Permissions: controll which accounts can use the AMI
+    
+    AMI Instance Types:
+        controll the resources the os gues guest
+        Five categories:
+            1) General purpose:
+                A#: scale out arm based workloads
+                T#: small databases
+                M#: primary general purpose type 
+            2) Compute Optomized
+                C4: compute intensive
+                C5: compute intensive with choice of processors
+                C5N: high compute applications
+            3) Memory Optomized
+                R4: memory intensive operations
+                X1: In memory storage
+                Z1D: high compute and high memory footprint
+            4) Accelerated Computing
+                P2
+                G3
+                F1
+            5) Storage Optimized
+                H1
+                I3
+                D2
+
+Summary:
+    An EC2 instance is a virtual guest operating system that sits ontop of the host barmetal server that is managed by a hyperviser. An EC2 instance is made from two building blocks,
+    the AMi that constructs the host system, and the instance type that determines the resources provisioned to the instance. Instances can either make use of ephermeral storage,
+    instance store, or persistent store which is EBS. Networking to Ec2 instances is controlled through security groups that can have protocols, ports, and IPS specified that can
+    reach the ec2 instances. There are many instance type: general purpose, network optimized, compute optimized, accelerated computing, memory optizimed. 

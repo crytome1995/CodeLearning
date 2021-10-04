@@ -1,0 +1,37 @@
+AMI Images
+
+What is an AMI:
+    defines how to launch an ec2 instance
+
+    Includes the following:
+        OS Template:
+            can either be an ebs volume or an instance-store backed ami
+        Launch permissions:
+            which AWS accounts can use the AMI
+        Block Device Mapping:
+            devices to attach to instance on launch
+
+Using an AMI:
+    Ami's can be copied between or within the same region
+
+Creating an AMI:
+    1) Launch an instance from an existing AMI
+    2) customize the software
+    3) save instance as an AMI
+    Root volume type changes creation process:
+        EBS:
+            1) launch ec2 instance from an ami
+            2) customize instance
+            3) create the image
+        Instance-store:
+            1) launch ec2 instance from ami
+            2) customize instance
+            3) bundle the root volume:
+                - produces a bundle that holds an image manifest.xml and these are uploaded to an s3 bucket
+                - next register the AMI
+
+Summary:
+    AMI's make the backbone of EC2 Instances. An ami includes an os template that is specified by the root ebs volume or instance store, launch permissions that determine who can
+    use the ami, and a block device mapping. AMI's are located to a region and can be shared or copied over to other regions. Creating AMI's differes between ebs backed and instance store.
+    EBS volumes require no extra work and are created from a running instace. Instance store backed instances require the AMI to be bundled into a manifest.xml and then pushed to an 
+    s3 bucket.

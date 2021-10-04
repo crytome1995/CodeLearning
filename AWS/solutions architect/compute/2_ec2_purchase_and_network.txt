@@ -1,0 +1,85 @@
+EC2 Purchasing and Networking
+
+EC2 Purchasing options:
+    COST OPTIMIZATION
+    1) on-demand:
+        pay by the second and most expensive
+        - full controll over instance lifecycle
+        * recommended for short-term irregular workloads that can not be interrupted
+    2) savings plans
+        savings by making a commitment to a specified amound of usage for 1 to 3 year term
+        - Two types:
+            1) Compute Savings plan
+                savings of up to 66% applied to instances by commiting to an instance usage reguardless of type/AZ/region/OS
+            2) EC2 Instance Savigs plan
+                savings of up to 72% by committing to usage of an instance family such a M5 in a specific region
+    3) reserved instances
+        savings through making a commitment to a specific instance configuration by type and region
+        - billing discount applied to the use of on-demand instances
+        * APPLIED TO A SPECIFIC REGION AND TYPE
+        Pricing determinents:
+            - instance attributes
+            - term
+            - payment options: determines how much of a discount 
+                1) all upfront
+                2) partial upfront
+                3) no upfront 
+            - offering class:
+                1) convertable: convert from one instance type to another 
+                2) standard: stuck to a specific instance type
+    4) spot instances
+        savings by using resources from unused resources on on-demand instances
+        - hourly price based on demand of spot instances
+        * can specify a maximum price willing to pay for a spot instace
+        Rebalance Recommendation:
+            aws will notify when the price is reaching close to your spot instance max price
+        Spot instance interuption:
+            aws will reclaim spot instance resources when capacity or price is no longer available 
+    5) dedicated host
+        a physical server dedicated to the user for ec2 capacity usage
+        - allows usage with existing software licensing
+        - give insight into the cpu cores and socks on the instace 
+    6) dedicated instances
+        a dedicated instance 
+    7) capacity reservations
+        reserve capacity for ec2 instances in a specific AZ for any amount of time
+        Creation:
+            - AZ to reserve
+            - number of instances
+            - instance attributes
+        Matches instances that match the capacity reservation spec
+
+EC2 and VPC
+VPC: isolated network sections of AWS
+    Securiity groups:
+        virtual firewall that controlls traffic to ec2 instances
+        - STATEFUL: meaning allowed will automatically allow out
+    NACL:
+        controlls traffic to subnets
+        - STATELESS: meaning allowed and denied have to be explicitly specified
+    Subnet:
+        subset of VPC for hosting EC2 instances
+        - subnet with routing to an IGW is a public subnet
+        - subnets with a NAT GW are a private subnet
+    Elastic IP:
+        IP's bound to an ec2 instance that allow for instance failure by remapping the IP to a new running instance
+    Elastic Network Interface:
+         Virtual network card that can be associated with multiple EC2 instances. Allows for gpu usage
+
+Summary:
+    EC2 provides many purchasing options for cost-optomization which is one of the pillars of design. On-demand is the most expensive as you pay for what you use per hr. Spot instances 
+    are resources not being used by on-demand instances that can be used for an ec2 instance. Spot instances are purchased by specifying a per hour price that is acceptable
+    which is determined by demand. If the price of the spot instance or resources are being reclaimed the spot instance will be terminated. Savings plans are provide savings by commiting 
+    to some degree of usage over a period of 1 to 3 years. There are two types of savings plans the first being compute with a savings of 66% by committing to a usage reguardless of 
+    instance type/AZ/or region. The next is instance with a saving of 72% by commiting to a specific instance type in a specific AZ. Reserved instances provide cost savings by comitting
+    to a specific instance tpye and AZ. Price savings comes from use of on-demand instances that match the reserved spec. Convertable reserved instances can have their instance 
+    types changed, and standard means there is no changing of the instance type. Pricing is determined by instance type, region, and imprtantly the payment option. The payment options
+    are all upfront, partial upfront, and no upfront. The more upfront the more savings applied. Dedicated instaces provide two forms: dedicated hosts give the most control for the 
+    underlying system the instances run on, and dedicated instances give control to the compute used for the instances. Capacity reservation, involves reserving instance attributes in a 
+    AZ for any amount of time. This is what makes capacity reservation different from savings plans is the time. EC2 and VPC's go hand in hand when running a network topology. VPC's contain
+    securtiy groups that block traffic to instances and are stateful meaning that allowed traffic is automatically allowed as egress. NACL's control traffic to the subnet and are stateless.
+    Elastic IP's are static IPV4 addresses that allow for fail-over to be re-assigned to ec2 instaces, but only one. Elastic Network Interface give EC2 instances additonal hardware such 
+    as gpu compute power.
+
+
+

@@ -1,0 +1,10 @@
+CREATING A CLUSTER WITH KUBEADM
+
+Provisioning compute resources:
+    Requires:
+        1) vpc
+        2) subnets for instances
+        3) control node
+        4) worker node
+        5) docker on the hosts
+        6) install kubelet and kubectl on the hosts

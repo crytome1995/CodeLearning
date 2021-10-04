@@ -36,4 +36,13 @@ Problem solution 1: Shared storage for state files:
     Backend Limitations:
         1) the backend table and bucket must EXIST before the state can be pushed
         2) backend does not support interrpolation
-        
+
+Sharing state across modules:
+    remote_state data source: can reference a state file in read only mode
+        for importing meta-data into another module
+
+Built in functions:
+    Playing with functions: terraform console
+    - file("file_name"): reads a files contents and returns as a string 
+        * does not work for interpolation 
+            - template_file resource: supports interpolation

@@ -1,0 +1,148 @@
+COMPUTE OPTIONS
+
+Compute Engine:
+    Offers compute virtual machines
+    Supports:
+        storage up to 64TB in size and can be encrypted
+
+GKE:
+    fully managed kubernetes as a service
+    Uses VPC to isolate network
+
+Cloud Pub Sub:
+    managed publish subscribe service
+
+App Engine:
+    Fully managed serverless application platform
+    Hosting java,php,python....
+    * can autoscale 
+
+Cloud Functions:
+    serverelss function as a service 
+
+Cloud Run:
+    serverelss containerized service
+
+
+COMPUTE ENGINE:
+    Pre-emptive: cheapest
+    Virtual machines that can support up to 160 CPUS and 3.75 TB RAM
+    Storage:
+        Local SSD's of up to 3 TB and are physically attached to the server running the VM
+        Network Storage of 64 TB in size 
+    
+    Each instance is in a projet and a instance belongs to one VPC
+    * A project can have up to 5 VPC's
+
+    VM instance lifecycle:
+        1) provisioning: give resources
+        2) stagins: booting up
+        3) running: functional
+        4) stopping
+        5) terminated
+    
+    Instance group:
+        collection of vm instances as a single entity
+        2 Types:
+            managed: provides scaling in and out with self-healing
+            unmanaged: manually managed by the user, such as LB and removing instances
+
+    Networking:
+        A VM can have:
+            1 primary internal IP
+            1 primary external IP
+            Many secondary IP's
+    
+    Storage:
+        Persistent disks and SSD'S
+        Cloud sotrage buckets: use when latency and througput is not critical
+
+
+GKE:
+    fully managed kubernetes solution
+    * Google manages the control plane and we manage the node groups
+
+    Isolation:
+        Project holds the cluster, cluster holds nodes
+
+    Node Pools:
+        group of nodes in a cluster that hold the same configuration
+        * replicated across zones in a multi-zone cluster
+        * GKE will auto-repair nodes that are in a bad state
+            - drains the node
+            * can be configured for how many can be drained at a time
+        Creating a node-pool
+            gcloud container node-pools create <pool_name> --cluster <cluster_name>
+        Resizing a node-pool
+            gcloud container cluster resize <cluster_name> --node-pool <node_pool_name> --num-nodes=<#>
+      
+        Node Upgrades:
+            maintenance windows define when GKE can upgrade nodes
+    
+    Logging and Monitoring:
+        Stackdriver: out of the box monitoring for GKE clusters
+
+App Engine:
+    fully managed serverless application serivce
+    - applications are microservices
+        - each application can have multiple versions with one set as default
+    
+    Environments:
+        Where applications run in
+        Standard: 
+            - pre-confiugred containers
+            - provide rapid scaling for frequent traffic spikes
+            - pay for what you use
+        Flexible environment:
+            - apps that need custom runtime configurations
+            - optimal for consistent traffic
+    Instance managment:
+        applications have their scaling configuration like:
+            - initial insances
+            - request timeout 
+            - creation/stopping of instances
+    * App engine queses requests
+
+Cloud Functions:
+    Serverless execution for functions
+    - run code in response to events and interact with GCP other services
+
+    Events and Triggers:
+        Events: what happens in the cloud environment
+        Trigger: interest in a certain event that can be bound to a function to act on the event
+
+        Event Types:
+            HTTP/Cloud Storage/ Cloud pub/sub/ Cloud Friestore/ Cloud Firebase
+        Event data:
+            the data is determined by the invocation types:
+                1) Http (request, response)
+                2) background (data,context,callback)
+        Trigger Types:
+            to decalre a trigger type associated with the function
+            --trigger-(type)
+            * example -Http
+                        -pub-sub
+
+Cloud Run:
+    * use to run stateless containerized applications without needing to manage infrastructure
+    run stateless containers which can scale to zero in google cloud that can 
+    scale down to 0 unlike App Engine
+    Deploys containers so much faster than AppEngine since it deploys on VM's
+    Service:
+        main resource of a cloud run:
+            located in a region of a GKE cluster
+        * each service results in a unique endpoint that allows for scaling the backend containers
+    
+    Revision:
+        A changeset for a deployment
+        * immutable * 
+    Requests:
+        - timeout default of 5 mins but can go up to 15 mins
+    Containers:
+        Containers can have number of requests sent to container:
+            - max: 80 
+            - can set min to 1. This is good in the case of the application not being
+                designed for multiple requests
+
+        
+    

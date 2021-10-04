@@ -1,0 +1,17 @@
+Kubernetes resources
+
+resources are applied as manifests to the api servers which are then stored in ETCD. Controller managers makes sure that the state of etcd is reflected in the cluster.
+
+Resource definition:
+    resources: spec/metadata/status (MOST)
+        spec: determines what the controller should do
+        status: status of the resource from the controllers perspective
+        metadata: holds other information such as name labels, annotations and so..
+
+Namespaces:
+    logical seperation of resources in the cluster 
+    * resources in a namespace can not have overlapping names
+    * can set the default namespace of the kubeconfig: kubeclt config set-context --current --namepsace=<NS>
+
+Labels and Selectors:
+    

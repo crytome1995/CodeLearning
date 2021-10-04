@@ -1,0 +1,37 @@
+TERRAFORM MODULES
+
+Modules: reusable terraform blocks of Resources
+
+Module basics:
+    Referencing a module:
+        module <name of module> {
+            source = "location of module folder"
+            [params]
+        }
+    * adding modules requires running terraform init
+
+Module Inputs:
+    Requires: setting the expected input in the variables.tf file of the module
+    
+Module Locals:
+    - how to isolate variables from configuration reference
+    locals {
+        key = value
+    }
+    * referenced via local.<key>
+
+Module Outputs:
+    reference module output: module.module_name.output_val_name
+
+Module Gotchas:
+    File Paths:
+        To get arround relative path reference conflicts: path reference
+        * path.<TYPE>
+            1) root: returns path to the root module
+            2) module: path to the module where expression is defined
+            3) cwd: run path check from a different directory
+
+Versioned modules:
+    in a modules source section can point to a git repo followe by the version or tag of a commit
+    * this can allow for forward and backward compatability
+    

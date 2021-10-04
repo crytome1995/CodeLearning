@@ -1,0 +1,23 @@
+Volumes and snapshots
+
+EBS Volume:
+    durable block level storage 
+    - can modify the size or iops on live instances
+    Root volumes support:
+        general purpose, provisioned iops, and magnetic
+    EBS volumes are replicated in an AZ
+
+    Encryption:
+        uses kms master keys using AES-256 encryption
+    
+    Backup/Snapshots:
+        can take snapshots and store to s3 from running instances
+        * snapshots save data from the latest unique blocks created to avoid duplication
+        snapshots use lazy loading:
+            meaning an instance will not have all data from the snapshot rite away, but if it requests data the volume does not have yet it will be loaded from s3
+
+Summary:
+    An ebs volume is a durable block level storage for instances. EBS volumes, except the root volume can be detached and attacehd to other instances in the same region.
+    There are general purpose ssd, proviosned iops ssd's, magnetic, throughput optizimed, and cold hdd EBS storage types. EBS volumes can be encrypted using kms master keys using
+    AES-256 encryption. Snapshots can be taken of EBS volumes to provide point in time recovery. Snapshots take into account only recent block changes to avoid data duplication. Snapshots 
+    use lazy loading to bring up instances faster.

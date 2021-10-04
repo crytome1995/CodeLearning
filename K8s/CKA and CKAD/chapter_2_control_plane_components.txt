@@ -1,0 +1,17 @@
+Control Plane Components
+
+kube-api server: front end of the control plane
+etcd: key value store for the state of the CLUSTER
+kube-scheduler: selects nodes for pods to run on
+kube-controller-manager: emebeds all controllers:
+    - node controller, replication controller, endpoints controller, service and token controllers
+
+Worker nodes components:
+kubelet: makes sure each pod on then node is running correctly
+kube-proxy: handles networking requirements for service demands
+
+How control plane pods are brought up:"
+    on each controller sits a folder /etc/kubenetes/manifests/
+        - this directory holds the static pod manifests for the control plane
+
+    

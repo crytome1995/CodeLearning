@@ -1,0 +1,26 @@
+EC2 Best Practices
+
+Security:
+    lock down security groups
+    - can be done through systems manager
+    Patch/update software on instances
+Storage:
+    Isolate EBS volumes for OS and data
+        - make sure data volume is persisted after deletion
+Backup and Recovery:
+    Backup EBS snapshots by using EBS snapshots
+    Create AMI for instances to provide consistency and repeatability that allows for immutable infrastructure
+
+SSM(System Manager Session Manager)
+    an instance profile requiers role AmazonSSMRoleForInstanceQuickSetup
+    - Allows for setting up an ssh client without needing to open up port 22 on the security group 
+    * in the connect option of the EC2 dashboard
+Instances can be configured for burstable capacity: 
+    - This allows for instances to obtain more CPU than the instance tpye provides
+
+CPU/Disk/Network/StatusCheck
+
+Summary:
+    A few best practices when it comes to EC2 Instances are: security, lock down the ssh port, even remove it completely and enable SSH access through System session manager, storage, make 
+    sure the boot volume ebs and data volumes are seperate. Use similar AMI's for instances to keep an immutable infrastructure, backup ebs volumes through snapshots. Some tips for instances
+    is that some support burstable performance which allows them to go above the vCPU given by instance type, and some default statistics that can be views are cpu/disk/network/statuscheck

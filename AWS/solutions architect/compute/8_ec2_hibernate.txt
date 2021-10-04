@@ -1,0 +1,36 @@
+EC2 Hibernating
+
+Hibernating a linux instance:
+    When hibernating an instance the RAM data is persisted to the EBS root volume
+    - On reload of a hibernated instance:
+        RAM is reloaded into memory from the EBS volume, processes are started again, and volumes are re-attached
+
+Prerequisites:
+    Must be a supported instance-type: C,M,R,T instance families
+    * Instance RAM must be less than 150GB to hibernate
+    * Bare metal is not supported
+    * Supported AMI's: Amazon Linux, Ubuntu, Windows Server
+    * Root volume must be an EBS volume and the volume must be encrypted
+    * Hibernation must be enabled at launch
+    * EBS volume for hibernated instances supports: General purpose SSD or provisioned IOPS SSD
+
+Limitations:
+    - Instance store volumes will lose memory on hibernation
+    - A snapshot from a hibernated instance may have network problems during snapshot creation
+    - Can not hibernate an instance that is part of an ASG
+    - hibernated instances have their instance types locked down and can not be changed
+    - Limit of 60 days for a hibernated instance
+
+Features and Charges:
+    Pre-warmed instance:
+        - load stuff into ram and then stop the instance, allows for quick startup with all processes loaded
+    Charges:
+        Charged for when an instance is in stopping state, but not charged in stop state
+
+Summary:
+    Hibernating an EC2 instance first requires it is part of a supported instance family like the C,M,R,T instance families. The underlying instance also can not exceed 150GB of RAM if 
+    wanting to use hibernation, and the root volume must be an EBS backed volume for hibernation to work. Enabling hibernation on an ec2 instance is done at launch time, but can not be 
+    associated with instances in an ASG, there are also limitations on the AMI's supporting hibernation such as amazon linux, ubuntu, and windows server. Hibernation is the process of 
+    dumping ram into the ebs backed root volume and then stopping the instance. This instance can be in the hibernation state for up to 60 days. An instance store volumes attached
+    to the instance will lose data still during hibernation. Instances that have hibernation enabled can not change the instance type later. Hibernation encurs charges based on EBS volume 
+    storage and while the instance is going into the stopping state. 

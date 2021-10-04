@@ -1,0 +1,7 @@
+FROM debian
+
+RUN useradd -p ethan -ms /bin/sh ethan
+RUN usermod -aG sudo ethan
+USER ethan
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]

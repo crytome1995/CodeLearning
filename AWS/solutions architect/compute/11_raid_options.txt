@@ -1,0 +1,20 @@
+EBS Raid Options
+
+What is an EBS Raid option
+    provides faster I/O performance using striping
+        Striping: act of making segments of data and distributing it across multiple disk spaces
+    RAID 0: stripes volumes together
+    RAID 1: mirros two volumes together
+    * Do not use raid for boot volume because there is a chance a mirroed volume can fail which will fail the boot
+
+    RAID 0:
+        - use when I/O performacne is required over fault tolerance
+        - loss of a volume will result in complete data loss of the data array
+    RAID 1: 
+        - use when fault tolerance is most important
+        - data is mirrored across volumes
+
+Summary:
+    When settign up volumes there are two options for RAID settings of a volume. RAID 0 and RAID 1. RAID 0 provides a striping mechanism to volumes by segmenting data across the volume array.
+    This is prefered to be used when I/O performance is prefered over fault tolerance because the lose of one volume is a complete loss of data. Raid 1 uses mirroring to provide a redundancy 
+    in data. This raid level should be sued when fault tolerance is more important than I/O performance.

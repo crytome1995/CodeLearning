@@ -1,0 +1,100 @@
+TIPS AND TRICKS
+
+Loops:
+    - count
+    - for_each
+    - for
+    1) Count: Defines how many copies of a resource to make
+        Every resource has a count metadata parameter
+        resource "" "" {
+            count = 3
+        }
+            Create 3 of the specified resource
+            * count.index: used to reference the index of the count parameter
+            * pass the count.index into an array to get value from the index:
+                array[count.index]
+        How to get number from an array/string/map:
+            length(variable)
+            * returns the number of elements which can be used in conjunction
+                with Count
+        Resources created through count are now bunched into an array
+        Accessing count based resources:
+            resource_type.resource_name[INDEX].value
+            * pass the index to the specific resource in the array
+            To get all elements use the splat (*) symbol
+                resource_type.resource_name.[*].value
+            
+        Count Cons:
+            - Can not use count inside inline blocks
+                Example:
+                resource "" "" {
+
+                    <inline-name> {
+
+                    }
+                }
+            - Terraform keeps track of resource lists by index, so removing an item from the list
+            will cause the deletion of the index at the tail of the list and will force changes across
+            all other indexes
+                * This problem is solved with for_each expression
+
+    2) for_each: allowes creation of multiple copies of a resource or creation of multiple copies
+        of an inline block
+        resource "" "" {
+            for_each = <COLLECTION>
+        }
+        ** Collection must be a set or a map, does not support lists
+
+        Creating a list of IAM users:
+            resource "" "" {
+                for_each = toset(var.users)
+                name = each.value
+            }
+            each: how you reference the value in the for-Loops
+            each.value: sets
+            each.key: maps
+
+        for_each will create a map of resources with each key being the key 
+        in the for-each loop.
+
+        Getting all values of a map:
+            values(resource_type.resource_name)
+            Returns all values associated with a map to a list
+                * can pass the splat keyword to return of values to access a specific value
+        
+        ** for_each allows for removal of an element without having an affect on other resources 
+        in the collection
+
+        Creating multiple inline blocks:
+            dynamic "var_name" {
+                for_each = <collection>
+                content { 
+                    [CONFIG]
+                }
+            }
+            VAR_NAME: what each inline block will be applied to through the loop
+            content: key values to apply
+
+    3) for: how to modify data
+        Syntax(LIST): [for <ITEM> in <LIST>: <OPERATION>]
+            can specify a condition after operation
+        Syntax(MAP): [for <KEY>, <VALUE> in <MAP>: <OPERATION>]
+
+        Special: go from list to map and output a map
+            {for <ITEM> in <LIST>: <OUTPUT_KEY> => <OUTPUT_VALUE>}
+            * wrap expression in curly braces rather than brackets
+            * can also convert a map to a map the same way
+            Example: {for name, role in var.people: uppercase(name) => uppercase(role)}
+                convert all to uppercase and return a collection
+        
+        For loops in strings:  terraform supports doing for loops in string by using string directive
+            format: %{ for } %{ endfor }
+            * spaces between braces is important 
+            Example:
+            %{ for name in var.names } ${name} %{ endfor }
+            * to get rid of whitespace after each forloop
+            %{ ~ } %{ ~ }: use the ~
+
+Conditionals:
+    
+

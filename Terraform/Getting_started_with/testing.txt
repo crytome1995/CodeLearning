@@ -1,0 +1,29 @@
+TESTING TARRAFORM
+
+Manual Tests:
+    By providing examples, in an example folder it allows for easier manual testing
+    * developers get their own AWS account
+    Cleaning up after:
+        manually through terraform destroy
+        Automating:
+            cloud-nuke: automate the destructing of AWS resources based on a certain age
+            janitor-monkey: automate deletion of resources on a criteria, supports sending notification
+            before delete
+            aws-nuke: delete all resources in an aws account
+                - done through config Yaml
+Automated Tests:
+    terratest:
+        supports testing: terraform/packer/docker/helm
+        Written in GO
+    Dependency Injection:
+        1) Setup an example for the module
+        2) fir external dependencies create a dependencies.tf file
+        3) define variables to provide to dependencies
+        4) set variables to null as default
+        5) dependencies can have their creation optional through the count argument
+        example: 
+        data "" "" {
+            count = var."" == null ? 1 : 0
+
+        }
+        Will only create if the var is set

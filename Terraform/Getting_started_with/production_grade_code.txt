@@ -1,0 +1,67 @@
+PRODUCTION GRADE TERRAFORM Code
+
+Why it takes so long to build production grade:
+
+
+How to make production grade kubernetes:
+    1) Small Modules:
+        Keep modules to a specific function
+        Design in a way that can be used across multiple facets
+    2) Composable Modules:
+        Generic modules:
+            modules should be a husk  for use for other modules allowing for fine-grained
+            configuration
+        Use-case-specific modules:
+            modules that combine other modules to perform a function
+        
+
+
+
+
+
+
+
+
+
+Beyond Modules:
+    When needing to perform opertions on machine or local computer:
+        1) provisioner:
+            - provide a way to do remote and local exec for useful commands
+            Example:
+                provisioner "remote-exec" {
+                    inline = [""]
+                }
+
+                connection {
+                    "" = ""
+                }
+                * provisioner: defines either remote-exec or local-exec
+                * connection: required for remote-exec for SSH connections
+                * self.<var>: used with provisioner and connection to reference own attributes
+            * provisioners only run ONCE 
+            * can have multiple provisioners with each being executed one by one
+        2) provisioner null_resource:
+            resource "null_resource" "foo" {
+                triggers = {
+                    "" = ""
+                }
+                provisioner "type" {
+
+                }
+            }
+            provie a way to execute a provisioner without the need for creating an actual resource
+            * triggers: takes in key values and when the value changes,  will trigger the resource will be re-created
+
+        3) data "external" : how to interct with external scripts 
+            data "external" "foo" {
+                program = []
+
+                query = {
+                    "" = ""
+                }
+
+            }
+            * program: what is being executed
+            * query: optional data that can be passed to the program as json from stdin
+            * accessing data: external.foo.result     
+        

@@ -1,0 +1,35 @@
+Public / Private / Elastic IP Addresses
+
+IP Addressing in VPC
+    - EC2's in the vpc by default use IPV4 protocol
+    - Ec2 instances are reachable over the internet if given a public IP address and routed through and internet gateway
+    - An elastic IP address will make an IP address consistent with an Ec2 instance
+
+    IPv4 vs IPv6
+    - ipv4:
+        - vpc cidr size can be from 16-28
+        - subnet cidr can be from 16-28
+        - private and public ip addresses are different and addressed through a NAT
+        - supports elastic IP's
+    - ipv6:
+        - vpc cidr size is fixed at 56
+        - subnet cidr fixed at 64
+        - all addresses are PUBLIC
+        - does not support elastic IP's
+        - persisted on instance restart
+
+Public vs Elastic IP addresses:
+    1) Public:
+        - on instance restart a new ipv4 from AWS pool is given to the instance
+        - can be reached by the internet
+        - can be configured by the subnet or instance launched
+        - can not be manually assigned
+    2) Elastic:
+        - elastic IP's are persistent and can be shuffled betweeen ec2 instances and are charged if the elastic IP is not associated with a running instance
+
+Summary:
+    vpcs are what ec2 instances are deployed to on AWS. A vpc is made up of either a ipv4 cidr block a ipv6 cidr block or both. A vpc's cidr block can be broken down to each subnet in the vpc.
+    There are some key differences between ipv4 and ipv6. Ipv4 can have a vpc and subnet cidr range from 16-28 while ipv6 vpc is fixed at 56 and subnet is fixed at 64. Ipv4 addresses can be
+    different between the public and private ip of the instance while ipv6 address is the same between and is always reachable from the internet. Ipv4 is supported for elastic ip's while 
+    ipv6 dues not support elastic ip's. Public IP addresses are managed by AWS's pool of ips and are not able to be configured manually on the instances when requested. Unlike elastic ip'S
+    who's ip remains the same while owned, public ip's are changed on each instance restart. If an elastic Ip is not associated with an instance a charge is incurred.

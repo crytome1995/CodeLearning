@@ -1,0 +1,4 @@
+WHAT IS A CNI:
+    responsible for keeping track of network's that are established by adding veth pairs between containers
+    and the host system
+    * CRI talks to the CNI to add a container to the network

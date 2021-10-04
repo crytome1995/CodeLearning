@@ -1,0 +1,26 @@
+Sharing AMI'S
+
+Copying an AMI
+    copying an ami can be done withing regions or across regions
+    Encryption:
+        - can copy an ami from encrypted snapshots, which can also be changed on copy
+            - un-encrypt AMI
+    * Copied AMI's have unique ID's
+    * launch permissions are not carried over to the copied AMI
+    * AWS Marketplace AMI's can not be copied over
+
+    Cross region Copy:
+        allows for cross region deployment of consistent instances using the same AMI
+        * Regions are limited to 100 AMI copies
+    
+    Cross Account Copy:
+        sharing an ami with another account, the root account is charged for the AMI storage
+        * The source AMI owner needs to give read permissions to the storage backend of the AMI
+        * If the storage backend is encrypted, the encryption key must be shared with the destination account
+
+Summary:
+    When it comes to cpying AMI's there are two ways to do this. Copying an ami in the owning account can be done in the same region, or across region. An account is alowed 100 copies of 
+    AMI's per region, and some things to remember are that the copied AMI's have unique ID's from the source and do not carry over launch permissions. Cross account sharing requires the source
+    account to have read permissions to the source volume of the AMI and must also have access to the encryption key if the root storage is encrypted. The account the owns the AMI that is being
+    used for the copy is charged for the persistence of the AMI to the target account. No reboot option of copying an AMI is how to control if the host instance will be reboot or not during 
+    AMI creation. Enabling no reboot can cause the AMI to not be stable.

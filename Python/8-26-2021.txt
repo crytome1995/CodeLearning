@@ -1,0 +1,17 @@
+* and a list
+l = ["hello", "hello"]
+print(*l)
+will unpack the list into its own variables
+
+zip:
+    combine an iterables into  set
+    SETS: unique and can not be changed
+    zip(*iterable)
+xrange vs range:
+    do the same thing, but xrange takes up less memory footprint
+
+
+Initialize a variable for the return
+Work with a windows
+
+two differences abs represent distance between the two

@@ -1,0 +1,15 @@
+Dashboard:
+    resources must belong to a project
+    Activity streams see what is being done on a project
+
+Projects:
+    Organization -> folders -> projects
+        - resources belong to projects
+        - projects can belong to multiple folders
+        - folders belong to an organization
+
+
+Setting project:
+    gcloud config set project <project_id>
+    gcloud config set compute/zone <zone>
+    

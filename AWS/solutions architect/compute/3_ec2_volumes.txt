@@ -1,0 +1,42 @@
+EC2 Volumes and encryption
+
+
+EC2 EBS Volumes:
+    durable block level devices that are attached to ec2 instances
+    - provide flexibility by allowing increase of size and IOPS dynamically
+    * volume and instance must be on same AZ
+    Multi-attach:
+        some instances and volumes support attaching to multiple instances if they have Nitro support such as the t3 general purpose
+        - good for low-latency file storage that needs to be shared between instances
+    
+    EBS Volume tpyes:
+        1) Generic purpose SSD
+            - generic workload with 3000 iops
+        2) Provisioned IOPS
+            - high throughput workloads
+            - if needing more than 3000 iops
+        3) Throughput optimized
+            - low cost hdd for frequently accessed workloads
+        4) Cold HDD
+            - lowest cost hdd for less frequently accessed workloads
+        5) magnetic
+            - workloads were data is infrequently accessed
+    
+    EBS Encryption:
+        uses encryption keys using AES-256 algorithm to encrypt volumes and snapshots
+        - encryption happens on the ec2 instance
+        * can encrypt the boot and data volumes of ec2 instances
+        Supported encyption:
+            - data at rest in the volume
+            - data moving between volume and ec2 instance
+            - snapshots created from an encrypted volume
+            - volumes from an encrypted volume
+
+EC2 Key Pairs:
+    private and public key used to connect to ec2 instances
+    - placed in ~./.ssh/authorized_keys
+Summary:
+    EC2 EBS volumes make up the block storage mechanism to mount filesystems onto instances. EBS volumes support resizing and provisioning more IOPS if needed. General purpose SSD's are 
+    mostly used for general purpose work and support 3000 IOPS. Provisioned IOPS should be used for more IO intensive workloads as it can have a far greater number of IOPS. Provisioned IOPS 
+    also support multi attach to bind multiple ec2 instances to a volume. There is throughput optimized which is just a hdd type disk good for frequently accessed data, cold hdd for infrequently
+    accessed data, and magnetic disk. Ebs encryption is done through KMS using AES-256 encryption. Encryption is done on the instance and can be applied to the volume and even snapshots.

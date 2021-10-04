@@ -1,0 +1,53 @@
+ELB
+
+What is:
+    accepts traffic to distribute across EC2 instances
+    Elastic:
+        scales in and out as traffic changes overtime
+    Provides healthchecks to registered targets meaning it only routes traffic to healthy targets
+    * can route traffic on-premise and in the cloud
+    * cross-zone loadbalancing: route traffic to multiple AZ's across ELB's
+        - always enabled for ALB but dissabled by default for NLB
+Best practices:
+    Bind a load balancer to multiple availability zone to provide fault tolerance
+
+Application Load Balaner:
+    application level of OSI layer
+    - routing rules make up the directions of traffic with defined ports and protocols
+        - a routing rules is made of rules that have priority and conditions
+        - a rule must have a default action
+    Targets:
+        define the instances to send traffic to
+        Targets can be registered to multiple target groups
+    
+    How it works:
+        ALB evaluates rules in priority order to determine the rule to apply and send traffic to a specific instance based on target groups
+        * Traffic is routed based on request content
+        Routing algorithm:
+            - round robin (DEFAULT)
+            - least requests
+    
+    ALB and Route53: ALB can be used for failover with route53 as active/passive 
+    ALB and cloundfront: ALB can be used as a cloudfront origin
+    ALB and global accelerator endpoint: ALB can be used to improve performance for instances by imrpoving availability through routing traffic through AWS network 
+    ALB vs NLB: ALB should be used for path based routing
+    ALB and fargate: interact with fargate task
+    ALB and Elasticache:
+        Elasticache can be used as a session store that would allow for all instances in a target group to obtain session state for a user
+        - Distributed
+    
+
+ALB Summary:
+    ALB's sit at layer 7 of the OSI model, application layer, and handle routing based on the contents of the user request such as port and path. This differes from NLB that
+    sits at layer 4. ALB's are route traffic to instances associated with target groups, and instances can be associated with more than one target group. These groups have their health 
+    checked and are removed if determined to be unhealthy. Traffic is sent to instances based on routing rules which have a priority and conditions. A rule has to have a default rule. 
+    An ALB can be used as a cloudfront origin rather than s3, can be used for active failover routing for route53, can use elasticache session store for a distributed session state 
+    to facilitate sticky sessions, and also be used as a global accelerator to improve performance by routing traffic through the AWS network. 
+
+
+Network Loadbalancer
+    transport level of OSI layer
+
+
+Gateway Loadbalancer:
+    manage virtual applications, IP's

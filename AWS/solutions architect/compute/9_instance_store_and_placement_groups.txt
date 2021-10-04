@@ -1,0 +1,32 @@
+Instance Store and Palcement groups
+    Instance-store: block level storage located on disk
+    Placement group: determines how the instances are placed on the hypervisor
+        Two type:
+            1) spread
+            2) cluster
+    
+Instance-store: temporary block storage for instance buffers or scratch data
+    - can not detach and attach to another instance
+    - if the instance stops the data on the instance store is lost
+
+Placement group: how instances are placed on the hypervisor
+    - no charge for placement group
+    2 types:
+        1) Cluster:
+            instances are placed on a single AZ
+            - requires instances to have enhanced networking
+            Recommended to launch all instances of the same type
+                - if not: can cause an insufficient capacity error
+        2) Spread:
+            each instance is launched on its own hypervisor in differnent AZ's
+            * Allows for fault tolerance
+            Spread placement groups are not supported with dedicated hosts or instances
+            Can have the request blocked if not enough resources are available
+            Allows for different instance types
+
+Summary:
+    Instance store is what should be used for data that does not need to persists after instance termination. An instance store volume can not be detached
+    and attached to a new volume. Placement groups control the placement of ec2 instances on aws. There are two types. Cluster places instances in the same AZ. With cluster placement groups
+    there is no garantee of capacity for the placement group if changing the instance type. Cluster networking requires the instances to have enahnced networking enabled. Spread placement 
+    groups put instances on seperate hypervisors across individual AZ's. This allows for HA. Spread placement groups can have different instance types associated with them. Not supported with
+    dedicated instances or hosts.

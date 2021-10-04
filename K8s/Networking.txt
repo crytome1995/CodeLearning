@@ -1,0 +1,57 @@
+NETWORKING
+
+Basics:
+    Network is flat: each pod can see eachother, each container in a pod shares the same IP
+    Intra-pod-communication:
+        ports can not collide between pods because each pod has its own IP
+    Inter-pod-communication:
+        pods can communicate through discovery mechanisms such as DNS
+    Pod-to-service:
+        kube-proxy handles load balancing network across a set of pods
+        * each node has a kube-proxy which tracks pods IP'S
+
+Kubernetes-networking vs Docker netowking:
+    Docker: Each container exposes its port to the underlying node, but can cause
+    conflicts if two containers attempt to expose the same port
+    * must go through the hosts ip to interact with the container
+    Graph:
+        container: ip 123.123.123.123 -> eth0:
+                                            eth0: primary network interface  can be viewed
+                                                    through ifconfig cli
+                    eth0 -> veth:
+                                veth: virtual ethernet interace
+                                        used to communicate to the host namespace
+                    veth -> docker0:
+                        docker0 is the bridge to the host-system
+                        docker0 -> host
+
+
+Linux Networking Basics:
+    Linux has a single physical network interface, but this can be divided into 
+    smaller namespaces
+
+    Netowrk namespaces:
+        namespaces are isolated regions of network on the same host
+        namespaces can not talk to eachothr unless done so through bridges/gateways/switches
+    Veth:
+        represent physical network devices that are assigned to a namespace
+        * isolation of namespaces 
+        * assign the veth to the namespace and physical device
+    Bridges:
+        connect network segments to allow node communication
+        * opperates at
+            l1: physical
+            l2: network
+    MTU: maximum transmission unit
+        how much data in bytes can be sent PER packet
+        higher MTU reduces throughput due to having to wait for entire packet
+
+
+SHIT:
+    Namespaces are isolations of the host network
+    Namesapces can not talk to eachother by default
+    To link namespaces together they must either have:
+        a veth pair linking the two
+        or a veth pair attached to a bridge
+    For external traffic to interact with a namespace a NAT network address translation
+    needs to be enabled with MASQUERADE option
